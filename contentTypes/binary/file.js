@@ -1,5 +1,5 @@
 import {chokidar$} from "../../utils/chokidar"
-import {contentPath} from "../../deploy/config"
+import {contentPath} from "../../config"
 import {fsPromise} from "../../utils/fs"
 import {idToPath} from "../../utils/id"
 import path from "path"

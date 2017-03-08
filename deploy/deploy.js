@@ -1,7 +1,7 @@
 import {addAll, commit, push} from "./git"
 import {fsPromise} from "../utils/fs"
 import moment from "moment"
-import {outPath} from "./config"
+import {outPath} from "../config"
 import path from "path"
 
 /* eslint-disable no-console */

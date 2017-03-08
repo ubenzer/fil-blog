@@ -1,5 +1,5 @@
 import path from "path"
-import {templatePath} from "../index"
+import {templatePath} from "../config"
 
 const requireUncached = (module) => {
   const templateModules = Object.keys(require.cache)

@@ -5,7 +5,7 @@ import {defaultHeadersFor} from "../utils/http"
 import path from "path"
 import {render} from "../utils/template"
 import {requireUncached} from "../utils/require"
-import {templatePath} from "../index"
+import {templatePath} from "../config"
 
 const chunkSize = 10
 

@@ -3,7 +3,7 @@ import {chokidar$} from "../../utils/chokidar"
 import {fsPromise} from "../../utils/fs"
 import path from "path"
 import stylus from "stylus"
-import {templatePath} from "../../index"
+import {templatePath} from "../../config"
 
 const renderAsync = Promise.promisify(stylus.render)
 

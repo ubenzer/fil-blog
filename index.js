@@ -1,4 +1,4 @@
-import {cachePath, outPath, templatePath} from "./deploy/config"
+import {cachePath, outPath, templatePath} from "./config"
 import {binaryPassthroughHandler} from "./routes/postAttachmentPassthroughHandler"
 import {chokidar$} from "./utils/chokidar"
 import {cssCollection} from "./contentTypes/templateItems/cssCollection"

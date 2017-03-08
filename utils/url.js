@@ -1,4 +1,4 @@
-import {postSubfolder, staticAssetsSubfolder, templateSubfolder} from "../deploy/config"
+import {postSubfolder, staticAssetsSubfolder, templateSubfolder} from "../config"
 import {idToPath} from "./id"
 import path from "path"
 import replaceall from "replaceall"

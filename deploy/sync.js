@@ -1,7 +1,7 @@
 import {addAll, clone, pull, reset} from "./git"
 import debugc from "debug"
 import {fsPromise} from "../utils/fs"
-import {outPath} from "./config"
+import {outPath} from "../config"
 import path from "path"
 
 const debug = debugc("fil:site")

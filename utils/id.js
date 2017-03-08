@@ -1,4 +1,4 @@
-import {postSubfolder, staticAssetsSubfolder} from "../deploy/config"
+import {postSubfolder, staticAssetsSubfolder} from "../config"
 import {IMAGE_EXTENSIONS} from "./image"
 import path from "path"
 import replace from "replaceall"

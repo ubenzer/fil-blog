@@ -1,4 +1,4 @@
-import {outPath, remoteRepoUrl} from "./config"
+import {outPath, remoteRepoUrl} from "../config"
 import path from "path"
 import {spawn} from "../utils/spawn"
 
