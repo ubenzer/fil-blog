@@ -1,7 +1,7 @@
 import {chokidarAddRemoveFile$} from "../../utils/chokidar"
 import {getFoldersIn} from "../../utils/fs"
 import path from "path"
-import {postPath} from "../../index"
+import {postPath} from "../../deploy/config"
 
 export const postCollection = {
   children: async () => {

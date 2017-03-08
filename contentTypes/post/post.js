@@ -1,5 +1,5 @@
 import {idToPath, idToType, isPathImage, pathToIdPart} from "../../utils/id"
-import {postPath, postSubfolder} from "../../index"
+import {postPath, postSubfolder} from "../../deploy/config"
 import {chokidar$} from "../../utils/chokidar"
 import {fsPromise} from "../../utils/fs"
 import globby from "globby"

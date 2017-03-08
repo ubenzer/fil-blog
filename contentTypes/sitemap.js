@@ -1,5 +1,5 @@
 import {urlForPost, urlForPostAttachment} from "../utils/url"
-import {baseUrl} from "../config"
+import {baseUrl} from "../deploy/config"
 import {idToType} from "../utils/id"
 import moment from "moment/moment"
 import sitemap from "sitemap"

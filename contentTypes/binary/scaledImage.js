@@ -1,5 +1,5 @@
 import {fromGeneratedImagePath, idToPath, pathToIdPart} from "../../utils/id"
-import {contentPath} from "../../index"
+import {contentPath} from "../../deploy/config"
 import path from "path"
 import {resizeByWidth} from "../../utils/image"
 

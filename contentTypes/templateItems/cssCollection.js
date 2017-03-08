@@ -1,5 +1,5 @@
 import {idForTemplateCss, pathToIdPart} from "../../utils/id"
-import {templatePath, templateSubfolder} from "../../index"
+import {templatePath, templateSubfolder} from "../../deploy/config"
 import {chokidar$} from "../../utils/chokidar"
 import globby from "globby"
 
