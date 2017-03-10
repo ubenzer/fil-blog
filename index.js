@@ -46,9 +46,11 @@ const project = {
     templateStylusHandler
   }),
   // Observable for changes that doesn't belong to any content (such as templates)
-  watcher$() {
-    return chokidar$(`${templatePath}/**/*.js`, {ignoreInitial: true})
-  }
+  watcher$: () =>
+    chokidar$([
+      `${templatePath}/**/*.js`,
+      "app/config.js"
+    ], {ignoreInitial: true})
 }
 
 export {project}
