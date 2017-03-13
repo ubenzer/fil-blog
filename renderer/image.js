@@ -1,4 +1,7 @@
-import {fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, urlToPath} from "../utils/id"
+import {
+  fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
+  urlToPath
+} from "../utils/id"
 import {isExternalUrl, urlForPostAttachment} from "../utils/url"
 import mime from "mime-types"
 import path from "path"
@@ -110,11 +113,15 @@ const renderAsImg = ({caption, classPartial, renderAsLink, url}) => {
   return img
 }
 
-export const markdownImageParser = (md, {imageMetas, scaledImageIds}) => {
+export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) => {
   md.renderer.rules.image = (tokens, idx) => {
     const token = tokens[idx]
     const srcIndex = token.attrIndex("src")
-    const url = token.attrs[srcIndex][1]
+
+    const rawUrl = token.attrs[srcIndex][1]
+    const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
+    const url = urlForPostAttachment({id: imageId})
+
     const rawCaption = token.content
 
     const caption = calculateCaption({rawCaption})

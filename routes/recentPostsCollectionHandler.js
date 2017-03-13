@@ -22,18 +22,15 @@ const recentPostsCollectionHandler = {
       sorterFn: dateSorter
     })
 
-    const page = calculatePagination({
-      array: sortedPosts,
-      chunkSize
-    })[pageNumber]
+    const paginatedPostCollection = calculatePagination({array: sortedPosts, chunkSize})
+    const page = paginatedPostCollection[pageNumber]
 
     const Template = requireUncached(path.join(process.cwd(), templatePath, "multiplePosts")).default
     const str = render({
       jsx: <Template
-        isFirstPage={page.isFirstPage}
-        isLastPage={page.isLastPage}
-        pageNumber={page.pageNumber}
+        currentPage={page.pageNumber}
         posts={page.content}
+        totalPages={paginatedPostCollection.length}
            />
     })
 

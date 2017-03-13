@@ -1,7 +1,6 @@
 import frontMatter from "front-matter"
 import {markdownImageParser} from "../renderer/image"
 import markdownIt from "markdown-it"
-import markdownItReplaceLink from "markdown-it-replace-link"
 import {postIdToImageId} from "./id"
 import {urlForPostAttachment} from "./url"
 
@@ -33,8 +32,7 @@ const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds})
       return urlForPostAttachment({id: imageId})
     }
   })
-    .use(markdownItReplaceLink)
-    .use(markdownImageParser, {imageMetas, scaledImageIds})
+    .use(markdownImageParser, {imageMetas, postId: id, scaledImageIds})
 
   const separatedContent = markdownContent.split("---more---")
 

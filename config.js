@@ -19,3 +19,7 @@ export const outPath = "./dist"
 export const remoteRepoUrl = "git@github.com:ubenzer/ubenzer.github.io.git"
 
 export const readPost = "Devamını oku"
+export const firstPage = "İlk"
+export const previousPage = "Önceki"
+export const nextPage = "Sonraki"
+export const lastPage = "Önceki"
