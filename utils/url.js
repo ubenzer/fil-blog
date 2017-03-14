@@ -1,4 +1,4 @@
-import {postSubfolder, staticAssetsSubfolder, templateSubfolder} from "../config"
+import {page, postSubfolder, staticAssetsSubfolder, templateSubfolder} from "../config"
 import {idToPath} from "./id"
 import path from "path"
 import replaceall from "replaceall"
@@ -28,9 +28,11 @@ const urlForPostAttachment = ({id}) => {
   return slug(replaceall(path.sep, "/", p), {save: ["/", "."]})
 }
 
+const urlForCollection = ({page: p}) => p === 0 ? "/" : `/${page}/${p + 1}` // eslint-disable-line no-confusing-arrow
+
 const urlForSitemap = () => "/sitemap.xml"
 
 const isExternalUrl = ({url}) => url.includes("://") || url.startsWith("//")
 
 export {urlForTemplateCss, urlForPost, urlForPostAttachment, urlForTemplateStylus, isExternalUrl, urlForStaticAsset,
-  urlForSitemap}
+  urlForSitemap, urlForCollection}

@@ -2,16 +2,18 @@ import {dateSorter, postDateSelector, sort} from "../utils/sorting"
 import React from "react"
 import {calculatePagination} from "../utils/collection"
 import {defaultHeadersFor} from "../utils/http"
+import {idForCollection} from "../utils/id"
 import path from "path"
 import {render} from "../utils/template"
 import {requireUncached} from "../utils/require"
 import {templatePath} from "../config"
+import {urlForCollection} from "../utils/url"
 
 const chunkSize = 10
 
 const recentPostsCollectionHandler = {
   async handle({project, url}) {
-    const pageNumber = Number(url.substr(1) || 1) - 1
+    const pageNumber = idForCollection({url}).page
     const postIds = (await project.metaOf({id: "postCollection"})).children
     const posts = await Promise.all(postIds.map((id) => project.valueOf({id})))
 
@@ -42,7 +44,7 @@ const recentPostsCollectionHandler = {
   async handles({posts}) {
     const paginatedPostCollection = calculatePagination({array: posts, chunkSize})
 
-    return paginatedPostCollection.map(({isFirstPage}, index) => `/${isFirstPage ? "" : index}`)
+    return paginatedPostCollection.map((xyz, index) => urlForCollection({page: index}))
   },
   async handlesArguments({project}) {
     const posts = await project.metaOf({id: "postCollection"})

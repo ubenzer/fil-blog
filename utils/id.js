@@ -1,4 +1,4 @@
-import {postSubfolder, staticAssetsSubfolder} from "../config"
+import {page, postSubfolder, staticAssetsSubfolder} from "../config"
 import {IMAGE_EXTENSIONS} from "./image"
 import path from "path"
 import replace from "replaceall"
@@ -71,5 +71,12 @@ const idForPost = ({postIds, url}) =>
     .map((c) => ({id: c, url: urlForPost({id: c})}))
     .filter((c) => c.url === url)[0].id
 
+const idForCollection = ({url}) => {
+  if (url.length === 1) { return {page: 0} }
+  const pageNumberStr = url.substr(page.length + 2)
+  return {page: Number(pageNumberStr) - 1}
+}
+
 export {idToType, idToPath, pathToIdPart, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
-  fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, idForTemplateCss, idForStaticAsset}
+  fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, idForTemplateCss, idForStaticAsset,
+  idForCollection}
