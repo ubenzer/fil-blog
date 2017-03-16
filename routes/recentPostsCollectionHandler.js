@@ -1,4 +1,5 @@
 import {dateSorter, postDateSelector, sort} from "../utils/sorting"
+import {postsPerPage, templatePath} from "../config"
 import React from "react"
 import {calculatePagination} from "../utils/collection"
 import {defaultHeadersFor} from "../utils/http"
@@ -6,10 +7,9 @@ import {idForCollection} from "../utils/id"
 import path from "path"
 import {render} from "../utils/template"
 import {requireUncached} from "../utils/require"
-import {templatePath} from "../config"
 import {urlForCollection} from "../utils/url"
 
-const chunkSize = 10
+const chunkSize = postsPerPage
 
 const recentPostsCollectionHandler = {
   async handle({project, url}) {

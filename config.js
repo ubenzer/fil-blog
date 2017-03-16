@@ -17,6 +17,7 @@ export const staticAssetsPath = path.join(contentPath, staticAssetsSubfolder)
 export const cachePath = "./cache"
 export const outPath = "./dist"
 export const remoteRepoUrl = "git@github.com:ubenzer/ubenzer.github.io.git"
+export const postsPerPage = 5
 
 export const readPost = "Devamını oku"
 export const page = "sayfa"

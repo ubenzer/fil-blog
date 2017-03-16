@@ -3,6 +3,7 @@ import {markdownImageParser} from "../renderer/image"
 import markdownIt from "markdown-it"
 import {postIdToImageId} from "./id"
 import {urlForPostAttachment} from "./url"
+import emoji from 'markdown-it-emoji'
 
 const extractTitleFromMarkdown = ({markdown}) => {
   const lines = markdown.split("\n")
@@ -33,6 +34,7 @@ const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds})
     }
   })
     .use(markdownImageParser, {imageMetas, postId: id, scaledImageIds})
+    .use(emoji)
 
   const separatedContent = markdownContent.split("---more---")
 
