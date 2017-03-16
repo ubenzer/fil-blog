@@ -1,9 +1,9 @@
+import emoji from "markdown-it-emoji"
 import frontMatter from "front-matter"
 import {markdownImageParser} from "../renderer/image"
 import markdownIt from "markdown-it"
 import {postIdToImageId} from "./id"
 import {urlForPostAttachment} from "./url"
-import emoji from 'markdown-it-emoji'
 
 const extractTitleFromMarkdown = ({markdown}) => {
   const lines = markdown.split("\n")

@@ -81,23 +81,20 @@ const calculateFallbackImageUrl = ({availableSizes, url}) => {
   return urlForPostAttachment({id: bestCandidate.id})
 }
 
-const imgTag = ({caption, classPartial, url}) =>
-  `<img src="${url}" title="${caption}" alt="${caption}" ${classPartial}>`
+const imgTag = ({caption, classPartial, imageMeta, url}) =>
+  `<img src="${url}" title="${caption}" alt="${caption}" ${classPartial} \
+${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ""}>`
 
 const aTag = ({innerHtml, url}) =>
   `<a href="${url}" target="_blank">${innerHtml}</a>`
 
-const renderAsPicture = ({availableSizes, caption, classPartial, renderAsLink, url}) => {
+const renderAsPicture = ({availableSizes, caption, classPartial, imageMeta, renderAsLink, url}) => {
   const scaledImageUrl = calculateFallbackImageUrl({availableSizes, url})
-  const img = imgTag({caption, classPartial, url: scaledImageUrl})
+  const img = imgTag({caption, classPartial, imageMeta, url: scaledImageUrl})
 
   const sources = calculateSourceTag({availableSizes})
 
-  const picture = `
-    <picture>
-      ${sources.join("\n")}
-      ${img}
-    </picture>`
+  const picture = `<picture>${sources.join("\n")}${img}</picture>`
 
   if (renderAsLink) {
     return aTag({innerHtml: picture, url})
@@ -138,8 +135,9 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     if (availableSizes.length === 0) {
       throw new Error(`Image with url "${url}" not found.`)
     }
+    const imageMeta = imageMetas.filter((im) => im.id === imageId)[0].meta
 
-    return renderAsPicture({availableSizes, caption, classPartial, renderAsLink, url})
+    return renderAsPicture({availableSizes, caption, classPartial, imageMeta, renderAsLink, url})
   }
 }
 
