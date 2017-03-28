@@ -116,16 +116,19 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     const srcIndex = token.attrIndex("src")
 
     const rawUrl = token.attrs[srcIndex][1]
-    const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
-    const url = urlForPostAttachment({id: imageId})
-
     const rawCaption = token.content
 
     const caption = calculateCaption({rawCaption})
     const classPartial = calculateClassPartial({rawCaption})
     const renderAsLink = calculateRenderAsLink({rawCaption})
 
-    if (isExternalUrl({url}) || !isPathImage({p: urlToPath({url})})) {
+    if (isExternalUrl({url: rawUrl})) {
+      return renderAsImg({caption, classPartial, renderAsLink, url: rawUrl})
+    }
+
+    const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
+    const url = urlForPostAttachment({id: imageId})
+    if (!isPathImage({p: urlToPath({url})})) {
       return renderAsImg({caption, classPartial, renderAsLink, url})
     }
 

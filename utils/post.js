@@ -2,8 +2,7 @@ import emoji from "markdown-it-emoji"
 import frontMatter from "front-matter"
 import {markdownImageParser} from "../renderer/image"
 import markdownIt from "markdown-it"
-import {postIdToImageId} from "./id"
-import {urlForPostAttachment} from "./url"
+import {markdownLinkParser} from "../renderer/link"
 
 const extractTitleFromMarkdown = ({markdown}) => {
   const lines = markdown.split("\n")
@@ -27,13 +26,9 @@ const extractTitleFromMarkdown = ({markdown}) => {
 
 const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds}) => {
   // noinspection JSUnusedGlobalSymbols
-  const md = markdownIt({
-    replaceLink: (link) => {
-      const imageId = postIdToImageId({imageRelativeUrl: link, postId: id})
-      return urlForPostAttachment({id: imageId})
-    }
-  })
+  const md = markdownIt()
     .use(markdownImageParser, {imageMetas, postId: id, scaledImageIds})
+    .use(markdownLinkParser, {postId: id})
     .use(emoji)
 
   const separatedContent = markdownContent.split("---more---")

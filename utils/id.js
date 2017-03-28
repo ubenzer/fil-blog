@@ -53,12 +53,18 @@ const isGeneratedImagePath = ({p}) => {
   }
 }
 
-const postIdToImageId = ({postId, imageRelativeUrl}) => {
+const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
   const postPath = idToPath({id: postId})
-  const imageRelPath = urlToPath({url: imageRelativeUrl})
-  const imageAbsPath = path.join(postPath, imageRelPath)
-  return `image@/${postSubfolder}${pathToIdPart({p: imageAbsPath})}`
+  const relPath = urlToPath({url: relativeUrl})
+  const absPath = path.join(postPath, relPath)
+  return `${type}@/${postSubfolder}${pathToIdPart({p: absPath})}`
 }
+
+const postIdToImageId = ({postId, imageRelativeUrl}) =>
+  postRelativeIdConversion({postId, relativeUrl: imageRelativeUrl, type: "image"})
+
+const postIdToAttachmentId = ({postId, attachmentRelativeUrl}) =>
+  postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl, type: "file"})
 
 const idForPostAttachment = ({url, type}) => `${type}@/${postSubfolder}${url}`
 
@@ -78,5 +84,5 @@ const idForCollection = ({url}) => {
 }
 
 export {idToType, idToPath, pathToIdPart, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
-  fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, idForTemplateCss, idForStaticAsset,
-  idForCollection}
+  fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, postIdToAttachmentId,
+  idForTemplateCss, idForStaticAsset, idForCollection}
