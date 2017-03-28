@@ -26,12 +26,12 @@ const binaryPassthroughHandler = {
   async handlesArguments({project}) {
     const posts = await project.metaOf({id: "postCollection"})
     const arrayOfChildMeta = await Promise.all(posts.children.map((post) => project.metaOf({id: post})))
-    const postAttachments = arrayOfChildMeta.reduce((acc, meta) => [...acc, ...(meta.children)], [])
+    const postAttachments = arrayOfChildMeta.reduce((acc, meta) => [...acc, ...meta.children], [])
 
     const postImageIds = postAttachments.filter((pci) => idToType({id: pci}) === "image")
     const arrayOfScaledImagesMeta = await Promise.all(postImageIds.map((c) => project.metaOf({id: c})))
     const scaledImages = arrayOfScaledImagesMeta
-      .reduce((acc, meta) => [...acc, ...(meta.children)], [])
+      .reduce((acc, meta) => [...acc, ...meta.children], [])
 
     return {postAttachments, scaledImages}
   }

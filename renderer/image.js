@@ -53,7 +53,7 @@ const calculateSourceTag = ({availableSizes}) => {
   const imagesByMime = availableSizes.reduce((acc, as) => {
     const imageMime = mime.lookup(as.ext)
     const url = urlForPostAttachment({id: as.id})
-    const mimeResources = [...(acc[imageMime] || []), `${url} ${as.width}w`]
+    const mimeResources = [...acc[imageMime] || [], `${url} ${as.width}w`]
     return {...acc, [imageMime]: mimeResources}
   }, {})
 
