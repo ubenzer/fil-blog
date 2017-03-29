@@ -11,9 +11,10 @@ const render = ({jsx}) => {
   const title = head.title.toString().replace(regexp, "")
   const link = head.link.toString().replace(regexp, "")
   const meta = head.meta.toString().replace(regexp, "")
+  const script = head.script.toString().replace(regexp, "")
 
-  return `
-    <!doctype html>
+  return (
+    `<!doctype html>
     <html ${attr}>
       <head>
         ${title}
@@ -22,9 +23,10 @@ const render = ({jsx}) => {
       </head>
       <body>
         ${renderedPage}
+        ${script}
       </body>
     </html>
-  `
+  `)
 }
 
 export {render}

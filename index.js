@@ -5,6 +5,7 @@ import {cssCollection} from "./contentTypes/templateItems/cssCollection"
 import {file} from "./contentTypes/binary/file"
 import {hashOf} from "./utils/hash"
 import {image} from "./contentTypes/binary/image"
+import {js} from "./contentTypes/templateItems/js"
 import {post} from "./contentTypes/post/post"
 import {postCollection} from "./contentTypes/post/postCollection"
 import {recentPostsCollectionHandler} from "./routes/recentPostsCollectionHandler"
@@ -16,6 +17,7 @@ import {staticAssetHandler} from "./routes/staticAssetHandler"
 import {staticAssetsCollection} from "./contentTypes/staticAssetsCollection"
 import {stylus} from "./contentTypes/templateItems/stylus"
 import {templateCssHandler} from "./routes/templateCssHandler"
+import {templateJsHandler} from "./routes/templateJsHandler"
 import {templateStylusHandler} from "./routes/templateStylusHandler"
 
 // noinspection JSUnusedGlobalSymbols
@@ -25,6 +27,7 @@ const project = {
     cssCollection,
     file,
     image,
+    js,
     post,
     postCollection,
     scaledImage,
@@ -43,6 +46,7 @@ const project = {
     sitemapHandler,
     staticAssetHandler,
     templateCssHandler,
+    templateJsHandler,
     templateStylusHandler
   }),
   // Observable for changes that doesn't belong to any content (such as templates)

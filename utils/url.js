@@ -17,6 +17,11 @@ const urlForTemplateStylus = () => {
   return `/${p}/ui.css`
 }
 
+const urlForTemplateJs = () => {
+  const p = replaceall(path.sep, "/", templateSubfolder)
+  return `/${p}/app.js`
+}
+
 const urlForPost = ({id}) => {
   const p = idToPath({id})
   return slug(replaceall(path.sep, "/", p), {save: ["/"]})
@@ -35,4 +40,4 @@ const urlForSitemap = () => "/sitemap.xml"
 const isExternalUrl = ({url}) => url.includes("://") || url.startsWith("//")
 
 export {urlForTemplateCss, urlForPost, urlForPostAttachment, urlForTemplateStylus, isExternalUrl, urlForStaticAsset,
-  urlForSitemap, urlForCollection}
+  urlForTemplateJs, urlForSitemap, urlForCollection}
