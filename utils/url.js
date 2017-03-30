@@ -39,5 +39,18 @@ const urlForSitemap = () => "/sitemap.xml"
 
 const isExternalUrl = ({url}) => url.includes("://") || url.startsWith("//")
 
+// Source: http://stackoverflow.com/a/27728417/158523
+const ytPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*/
+
+const youtubeUrlToId = ({url}) => {
+  const parts = url.match(ytPattern)
+  if (parts !== null && parts.length === 2) {
+    return parts[1]
+  }
+  return null
+}
+
+const isYoutube = ({url}) => youtubeUrlToId({url}) !== null
+
 export {urlForTemplateCss, urlForPost, urlForPostAttachment, urlForTemplateStylus, isExternalUrl, urlForStaticAsset,
-  urlForTemplateJs, urlForSitemap, urlForCollection}
+  urlForTemplateJs, urlForSitemap, urlForCollection, youtubeUrlToId, isYoutube}

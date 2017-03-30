@@ -2,7 +2,7 @@ import {
   fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
   urlToPath
 } from "../utils/id"
-import {isExternalUrl, urlForPostAttachment} from "../utils/url"
+import {isExternalUrl, isYoutube, urlForPostAttachment, youtubeUrlToId} from "../utils/url"
 import mime from "mime-types"
 import path from "path"
 
@@ -110,6 +110,25 @@ const renderAsImg = ({caption, classPartial, renderAsLink, url}) => {
   return img
 }
 
+const renderAsYoutube = ({classPartial, url}) => {
+  const youtubeVideoId = youtubeUrlToId({url})
+
+  return (
+    `<div class="youtube video ${classPartial}">
+       <iframe type="text/html" src="https://www.youtube.com/embed/${youtubeVideoId}?modestbranding=1&amp;showinfo=0\
+&amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+     </div>
+    `
+  )
+}
+
+const renderExternal = ({caption, classPartial, renderAsLink, url: rawUrl}) => {
+  if (isYoutube({url: rawUrl})) {
+    return renderAsYoutube({classPartial, url: rawUrl})
+  }
+  return renderAsImg({caption, classPartial, renderAsLink, url: rawUrl})
+}
+
 export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) => {
   md.renderer.rules.image = (tokens, idx) => {
     const token = tokens[idx]
@@ -123,7 +142,7 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     const renderAsLink = calculateRenderAsLink({rawCaption})
 
     if (isExternalUrl({url: rawUrl})) {
-      return renderAsImg({caption, classPartial, renderAsLink, url: rawUrl})
+      return renderExternal({caption, classPartial, renderAsLink, url: rawUrl})
     }
 
     const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
