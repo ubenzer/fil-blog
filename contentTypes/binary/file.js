@@ -1,4 +1,4 @@
-import {chokidar$} from "../../utils/chokidar"
+import {chokidarChangeFile$} from "../../utils/chokidar"
 import {contentPath} from "../../config"
 import {fsPromise} from "../../utils/fs"
 import {idToPath} from "../../utils/id"
@@ -11,5 +11,5 @@ export const file = {
 
     return {content}
   },
-  contentWatcher$: ({id}) => chokidar$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
+  contentWatcher$: ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 }

@@ -1,6 +1,6 @@
 import {compress, meta} from "../../utils/image"
 import {idToPath, pathToIdPart, toGeneratedImagePath} from "../../utils/id"
-import {chokidar$} from "../../utils/chokidar"
+import {chokidarChangeFile$} from "../../utils/chokidar"
 import {contentPath} from "../../config"
 import path from "path"
 
@@ -8,7 +8,7 @@ import path from "path"
 const imageFormats = ["webp", null]
 const widths = [500, 1000, 1500, 2000]
 
-const watcher$ = ({id}) => chokidar$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
+const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 
 export const image = {
   children: async ({id}) => {

@@ -22,4 +22,7 @@ const chokidar$ = (...chokidarArgs) =>
 const chokidarAddRemoveFile$ = (...chokidarArgs) =>
   startWatching({args: chokidarArgs, events: ["add", "unlink"]})
 
-export {chokidar$, chokidarAddRemoveFile$}
+const chokidarChangeFile$ = (...chokidarArgs) =>
+  startWatching({args: chokidarArgs, events: ["change"]})
+
+export {chokidar$, chokidarAddRemoveFile$, chokidarChangeFile$}

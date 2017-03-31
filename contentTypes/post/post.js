@@ -1,6 +1,6 @@
+import {chokidar$, chokidarAddRemoveFile$} from "../../utils/chokidar"
 import {idToPath, idToType, isPathImage, pathToIdPart} from "../../utils/id"
 import {postPath, postSubfolder} from "../../config"
-import {chokidar$} from "../../utils/chokidar"
 import {fsPromise} from "../../utils/fs"
 import globby from "globby"
 import path from "path"
@@ -24,9 +24,9 @@ export const post = {
     )
   },
   childrenWatcher$: ({id}) =>
-    chokidar$(path.join(postPath, idToPath({id})), {
+    chokidarAddRemoveFile$(path.join(postPath, idToPath({id})), {
       ignoreInitial: true,
-      ignored: ["**/.*", path.join(postPath, idToPath({id}, "index.md")), "**/"]
+      ignored: ["**/.*", path.join(postPath, idToPath({id}), "index.md"), "**/"]
     }),
   content: async ({id, imageMetas, scaledImageIds}) => {
     const rawFileContent = await fsPromise.readFileAsync(path.join(postPath, idToPath({id}), "index.md"), "utf8")
