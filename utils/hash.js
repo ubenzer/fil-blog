@@ -1,8 +1,8 @@
-import hasher from "folder-hash"
+import hasher from 'folder-hash'
 
 export const hashOf = async ({p}) =>
   hasher.hashElement(p, {
-    excludes: [".*"],
+    excludes: ['.*'],
     match: {
       basename: true,
       path: false

@@ -1,6 +1,6 @@
-import {defaultHeadersFor} from "../utils/http"
-import {idForTemplateCss} from "../utils/id"
-import {urlForTemplateCss} from "../utils/url"
+import {defaultHeadersFor} from '../utils/http'
+import {idForTemplateCss} from '../utils/id'
+import {urlForTemplateCss} from '../utils/url'
 
 const templateCssHandler = {
   async handle({project, url}) {
@@ -16,7 +16,7 @@ const templateCssHandler = {
     return cssFiles.map((id) => urlForTemplateCss({id}))
   },
   async handlesArguments({project}) {
-    const {children: cssFiles} = await project.metaOf({id: "cssCollection"})
+    const {children: cssFiles} = await project.metaOf({id: 'cssCollection'})
 
     return {cssFiles}
   }

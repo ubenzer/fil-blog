@@ -1,70 +1,70 @@
-import {outPath, remoteRepoUrl} from "../config"
-import path from "path"
-import {spawn} from "../utils/spawn"
+import {outPath, remoteRepoUrl} from '../config'
+import path from 'path'
+import {spawn} from '../utils/spawn'
 
 /* eslint-disable no-console */
 
 const clone = async () => {
-  console.log("Cloning remote repo...")
+  console.log('Cloning remote repo...')
   return spawn({
-    args: ["clone", remoteRepoUrl, "."],
+    args: ['clone', remoteRepoUrl, '.'],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })
 }
 
 const commit = async ({message}) => {
-  console.log("Committing...")
+  console.log('Committing...')
   return spawn({
-    args: ["commit", "-m", message],
+    args: ['commit', '-m', message],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })
 }
 
 const addAll = async () => {
-  console.log("Staging all changes...")
+  console.log('Staging all changes...')
   return spawn({
-    args: ["add", "*"],
+    args: ['add', '*'],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })
 }
 
 const reset = async () => {
-  console.log("Resetting local changes...")
+  console.log('Resetting local changes...')
   return spawn({
-    args: ["reset", "--hard"],
+    args: ['reset', '--hard'],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })
 }
 
 const pull = async () => {
-  console.log("Pulling latest remote...")
+  console.log('Pulling latest remote...')
   return spawn({
-    args: ["pull"],
+    args: ['pull'],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })
 }
 
 const push = async () => {
-  console.log("Pushing to remote...")
+  console.log('Pushing to remote...')
   return spawn({
-    args: ["push"],
+    args: ['push'],
     cwd: path.join(process.cwd(), outPath),
-    exe: "git",
+    exe: 'git',
     onStderr: console.error,
     onStdout: console.log
   })

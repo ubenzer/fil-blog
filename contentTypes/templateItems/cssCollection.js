@@ -1,11 +1,11 @@
-import {idForTemplateCss, pathToIdPart} from "../../utils/id"
-import {templatePath, templateSubfolder} from "../../config"
-import {chokidar$} from "../../utils/chokidar"
-import globby from "globby"
+import {idForTemplateCss, pathToIdPart} from '../../utils/id'
+import {templatePath, templateSubfolder} from '../../config'
+import {chokidar$} from '../../utils/chokidar'
+import globby from 'globby'
 
 export const cssCollection = {
   children: async () =>
-    globby(["**/*.css"], {
+    globby(['**/*.css'], {
       cwd: templatePath,
       nodir: true
     })

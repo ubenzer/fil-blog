@@ -1,16 +1,16 @@
-import Promise from "bluebird"
-import {chokidar$} from "../../utils/chokidar"
-import {fsPromise} from "../../utils/fs"
-import path from "path"
-import stylus from "stylus"
-import {templatePath} from "../../config"
+import Promise from 'bluebird'
+import {chokidar$} from '../../utils/chokidar'
+import {fsPromise} from '../../utils/fs'
+import path from 'path'
+import stylus from 'stylus'
+import {templatePath} from '../../config'
 
 const renderAsync = Promise.promisify(stylus.render)
 
 const styls = {
   content: async () => {
-    const p = path.join(templatePath, "index.styl")
-    const strContent = await fsPromise.readFileAsync(p, "utf8")
+    const p = path.join(templatePath, 'index.styl')
+    const strContent = await fsPromise.readFileAsync(p, 'utf8')
 
     return renderAsync(strContent, {filename: p})
       .then((css) => ({content: css}))

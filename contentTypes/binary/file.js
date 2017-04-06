@@ -1,8 +1,8 @@
-import {chokidarChangeFile$} from "../../utils/chokidar"
-import {contentPath} from "../../config"
-import {fsPromise} from "../../utils/fs"
-import {idToPath} from "../../utils/id"
-import path from "path"
+import {chokidarChangeFile$} from '../../utils/chokidar'
+import {contentPath} from '../../config'
+import {fsPromise} from '../../utils/fs'
+import {idToPath} from '../../utils/id'
+import path from 'path'
 
 export const file = {
   content: async ({id}) => {

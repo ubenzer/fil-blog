@@ -1,5 +1,5 @@
-import Rx from "rxjs/Rx"
-import chokidar from "chokidar"
+import Rx from 'rxjs/Rx'
+import chokidar from 'chokidar'
 
 const startWatching = ({events, args}) =>
   Rx.Observable.create((subscriber) => {
@@ -17,12 +17,12 @@ const startWatching = ({events, args}) =>
   .refCount()
 
 const chokidar$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ["all"]})
+  startWatching({args: chokidarArgs, events: ['all']})
 
 const chokidarAddRemoveFile$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ["add", "unlink"]})
+  startWatching({args: chokidarArgs, events: ['add', 'unlink']})
 
 const chokidarChangeFile$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ["change"]})
+  startWatching({args: chokidarArgs, events: ['change']})
 
 export {chokidar$, chokidarAddRemoveFile$, chokidarChangeFile$}

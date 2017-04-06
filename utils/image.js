@@ -1,18 +1,18 @@
-import path from "path"
-import sharp from "sharp"
+import path from 'path'
+import sharp from 'sharp'
 
 // Gif is not supported
-const IMAGE_EXTENSIONS = ["jpg", "png", "webp"]
+const IMAGE_EXTENSIONS = ['jpg', 'png', 'webp']
 
 const extensionToSharpFormatMap = {
-  JPEG: "jpeg",
-  JPG: "jpeg",
-  PNG: "png",
-  WEBP: "webp",
-  jpeg: "jpeg",
-  jpg: "jpeg",
-  png: "png",
-  webp: "webp"
+  JPEG: 'jpeg',
+  JPG: 'jpeg',
+  PNG: 'png',
+  WEBP: 'webp',
+  jpeg: 'jpeg',
+  jpg: 'jpeg',
+  png: 'png',
+  webp: 'webp'
 }
 
 const extToSharpFormat = ({ext}) => extensionToSharpFormatMap[ext]

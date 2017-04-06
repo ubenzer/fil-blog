@@ -1,11 +1,11 @@
-import {compress, meta} from "../../utils/image"
-import {idToPath, pathToIdPart, toGeneratedImagePath} from "../../utils/id"
-import {chokidarChangeFile$} from "../../utils/chokidar"
-import {contentPath} from "../../config"
-import path from "path"
+import {compress, meta} from '../../utils/image'
+import {idToPath, pathToIdPart, toGeneratedImagePath} from '../../utils/id'
+import {chokidarChangeFile$} from '../../utils/chokidar'
+import {contentPath} from '../../config'
+import path from 'path'
 
 // Null stands for "original"
-const imageFormats = ["webp", null]
+const imageFormats = ['webp', null]
 const widths = [500, 1000, 1500, 2000]
 
 const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})

@@ -1,16 +1,16 @@
-import {chokidar$, chokidarAddRemoveFile$} from "../../utils/chokidar"
-import {idToPath, idToType, isPathImage, pathToIdPart} from "../../utils/id"
-import {postPath, postSubfolder} from "../../config"
-import {fsPromise} from "../../utils/fs"
-import globby from "globby"
-import path from "path"
-import {rawContentToPostObject} from "../../utils/post"
+import {chokidar$, chokidarAddRemoveFile$} from '../../utils/chokidar'
+import {idToPath, idToType, isPathImage, pathToIdPart} from '../../utils/id'
+import {postPath, postSubfolder} from '../../config'
+import {fsPromise} from '../../utils/fs'
+import globby from 'globby'
+import path from 'path'
+import {rawContentToPostObject} from '../../utils/post'
 
 export const post = {
   children: async ({id}) => {
     const p = idToPath({id})
 
-    return globby(["**/*", "!index.md", "!**/.*"], {
+    return globby(['**/*', '!index.md', '!**/.*'], {
       cwd: path.join(postPath, p),
       nodir: true
     })
@@ -26,16 +26,16 @@ export const post = {
   childrenWatcher$: ({id}) =>
     chokidarAddRemoveFile$(path.join(postPath, idToPath({id})), {
       ignoreInitial: true,
-      ignored: ["**/.*", path.join(postPath, idToPath({id}), "index.md"), "**/"]
+      ignored: ['**/.*', path.join(postPath, idToPath({id}), 'index.md'), '**/']
     }),
   content: async ({id, imageMetas, scaledImageIds}) => {
-    const rawFileContent = await fsPromise.readFileAsync(path.join(postPath, idToPath({id}), "index.md"), "utf8")
+    const rawFileContent = await fsPromise.readFileAsync(path.join(postPath, idToPath({id}), 'index.md'), 'utf8')
     const p = await rawContentToPostObject({id, imageMetas, rawFileContent, scaledImageIds})
     return {id, ...p}
   },
   contentArguments: async ({id, project}) => {
     const postAttachments = (await project.metaOf({id})).children
-    const imageIds = postAttachments.filter((c) => idToType({id: c}) === "image")
+    const imageIds = postAttachments.filter((c) => idToType({id: c}) === 'image')
 
     const scaledImageIds = (await Promise.all(imageIds.map((imageId) =>
       project.metaOf({id: imageId}).then((meta) => meta.children))))
@@ -46,6 +46,6 @@ export const post = {
     ))
     return {id, imageMetas, scaledImageIds}
   },
-  contentWatcher$: ({id}) => chokidar$(path.join(postPath, idToPath({id}), "index.md"), {ignoreInitial: true})
+  contentWatcher$: ({id}) => chokidar$(path.join(postPath, idToPath({id}), 'index.md'), {ignoreInitial: true})
 }
 

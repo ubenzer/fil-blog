@@ -1,5 +1,5 @@
-import Helmet from "react-helmet"
-import ReactDOMServer from "react-dom/server"
+import Helmet from 'react-helmet'
+import ReactDOMServer from 'react-dom/server'
 
 const regexp = / data-react-helmet="true"/g
 const render = ({jsx}) => {
@@ -8,10 +8,10 @@ const render = ({jsx}) => {
 
   // https://github.com/nfl/react-helmet/issues/79#issuecomment-265099060
   const attr = head.htmlAttributes.toString()
-  const title = head.title.toString().replace(regexp, "")
-  const link = head.link.toString().replace(regexp, "")
-  const meta = head.meta.toString().replace(regexp, "")
-  const script = head.script.toString().replace(regexp, "")
+  const title = head.title.toString().replace(regexp, '')
+  const link = head.link.toString().replace(regexp, '')
+  const meta = head.meta.toString().replace(regexp, '')
+  const script = head.script.toString().replace(regexp, '')
 
   return (
     `<!doctype html>

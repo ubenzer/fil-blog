@@ -1,6 +1,6 @@
-import {defaultHeadersFor} from "../utils/http"
-import {idForStaticAsset} from "../utils/id"
-import {urlForStaticAsset} from "../utils/url"
+import {defaultHeadersFor} from '../utils/http'
+import {idForStaticAsset} from '../utils/id'
+import {urlForStaticAsset} from '../utils/url'
 
 const staticAssetHandler = {
   async handle({project, url}) {
@@ -16,7 +16,7 @@ const staticAssetHandler = {
     return staticAssets.map((id) => urlForStaticAsset({id}))
   },
   async handlesArguments({project}) {
-    const {children: staticAssets} = await project.metaOf({id: "staticAssetsCollection"})
+    const {children: staticAssets} = await project.metaOf({id: 'staticAssetsCollection'})
     return {staticAssets}
   }
 }

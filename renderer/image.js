@@ -1,29 +1,29 @@
 import {
   fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
   urlToPath
-} from "../utils/id"
-import {isExternalUrl, isYoutube, urlForPostAttachment, youtubeUrlToId} from "../utils/url"
-import mime from "mime-types"
-import path from "path"
+} from '../utils/id'
+import {isExternalUrl, isYoutube, urlForPostAttachment, youtubeUrlToId} from '../utils/url'
+import mime from 'mime-types'
+import path from 'path'
 
 const FALLBACK_MAX_SIZE = 500
 
 const calculateCaption = ({rawCaption}) => {
-  const captionPairs = rawCaption.split("|")
+  const captionPairs = rawCaption.split('|')
   return captionPairs.pop()
 }
 
 const calculateRenderAsLink = ({rawCaption}) => {
-  const captionPairs = rawCaption.split("|")
-  return captionPairs.indexOf("nolink") === -1
+  const captionPairs = rawCaption.split('|')
+  return captionPairs.indexOf('nolink') === -1
 }
 
 const calculateClassPartial = ({rawCaption}) => {
-  const captionPairs = rawCaption.split("|")
+  const captionPairs = rawCaption.split('|')
   captionPairs.pop()
-  let className = captionPairs.indexOf("right") > -1 ? "right" : null
-  className = captionPairs.indexOf("left") > -1 ? "left" : className
-  return className ? `class="${className}"` : ""
+  let className = captionPairs.indexOf('right') > -1 ? 'right' : null
+  className = captionPairs.indexOf('left') > -1 ? 'left' : className
+  return className ? `class="${className}"` : ''
 }
 
 const availableSizesFor = ({id, imageMetas: allImageMetas, scaledImageIds: allScaledImages}) => {
@@ -60,7 +60,7 @@ const calculateSourceTag = ({availableSizes}) => {
   return Object.keys(imagesByMime)
     .map((m) => {
       const mimeImages = imagesByMime[m]
-      return `<source type="${m}" srcset="${mimeImages.join(", ")}">`
+      return `<source type="${m}" srcset="${mimeImages.join(', ')}">`
     })
 }
 
@@ -83,7 +83,7 @@ const calculateFallbackImageUrl = ({availableSizes, url}) => {
 
 const imgTag = ({caption, classPartial, imageMeta, url}) =>
   `<img src="${url}" title="${caption}" alt="${caption}" ${classPartial} \
-${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ""}>`
+${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ''}>`
 
 const aTag = ({innerHtml, url}) =>
   `<a href="${url}" target="_blank">${innerHtml}</a>`
@@ -94,7 +94,7 @@ const renderAsPicture = ({availableSizes, caption, classPartial, imageMeta, rend
 
   const sources = calculateSourceTag({availableSizes})
 
-  const picture = `<picture>${sources.join("\n")}${img}</picture>`
+  const picture = `<picture>${sources.join('\n')}${img}</picture>`
 
   if (renderAsLink) {
     return aTag({innerHtml: picture, url})
@@ -132,7 +132,7 @@ const renderExternal = ({caption, classPartial, renderAsLink, url: rawUrl}) => {
 export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) => {
   md.renderer.rules.image = (tokens, idx) => {
     const token = tokens[idx]
-    const srcIndex = token.attrIndex("src")
+    const srcIndex = token.attrIndex('src')
 
     const rawUrl = token.attrs[srcIndex][1]
     const rawCaption = token.content
@@ -151,7 +151,7 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
       return renderAsImg({caption, classPartial, renderAsLink, url})
     }
 
-    const id = idForPostAttachment({type: "image", url})
+    const id = idForPostAttachment({type: 'image', url})
     const availableSizes = availableSizesFor({id, imageMetas, scaledImageIds})
 
     if (availableSizes.length === 0) {

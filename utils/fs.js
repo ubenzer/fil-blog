@@ -1,6 +1,6 @@
-import Promise from "bluebird"
-import fs from "fs-extra"
-import path from "path"
+import Promise from 'bluebird'
+import fs from 'fs-extra'
+import path from 'path'
 
 // noinspection JSUnresolvedFunction
 const fsPromise = Promise.promisifyAll(fs)

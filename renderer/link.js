@@ -1,15 +1,15 @@
-import {isExternalUrl, urlForPostAttachment} from "../utils/url"
-import {postIdToAttachmentId} from "../utils/id"
+import {isExternalUrl, urlForPostAttachment} from '../utils/url'
+import {postIdToAttachmentId} from '../utils/id'
 
 const calculateShouldOpenInNewTab = ({isUrlExternal}) => isUrlExternal
 
 const renderLinkOpen = ({inNewTab, url}) =>
-  `<a href="${url}" ${inNewTab ? 'target="_blank"' : ""}>`
+  `<a href="${url}" ${inNewTab ? 'rel="noopener noreferrer" target="_blank"' : ''}>`
 
 export const markdownLinkParser = (md, {postId}) => {
   md.renderer.rules.link_open = (tokens, idx) => { // eslint-disable-line camelcase
     const token = tokens[idx]
-    const hrefIndex = token.attrIndex("href")
+    const hrefIndex = token.attrIndex('href')
 
     const rawUrl = token.attrs[hrefIndex][1]
     const isUrlExternal = isExternalUrl({url: rawUrl})

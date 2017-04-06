@@ -1,10 +1,10 @@
-import {addAll, clone, pull, reset} from "./git"
-import debugc from "debug"
-import {fsPromise} from "../utils/fs"
-import {outPath} from "../config"
-import path from "path"
+import {addAll, clone, pull, reset} from './git'
+import debugc from 'debug'
+import {fsPromise} from '../utils/fs'
+import {outPath} from '../config'
+import path from 'path'
 
-const debug = debugc("fil:site")
+const debug = debugc('fil:site')
 
 /* eslint-disable no-console */
 
@@ -12,8 +12,8 @@ const debug = debugc("fil:site")
 // resets all changes
 // pulls latest changes from remote
 const sync = async () => {
-  console.log("Syncing remote repo into local...")
-  const gitDirectory = path.join(outPath, ".git")
+  console.log('Syncing remote repo into local...')
+  const gitDirectory = path.join(outPath, '.git')
 
   const hasGit = await fsPromise.accessAsync(gitDirectory, fsPromise.constants.W_OK)
     .then(() => true)
@@ -22,7 +22,7 @@ const sync = async () => {
   debug(`Has git? ${hasGit}`)
 
   if (!hasGit) {
-    console.log("Removing everything in dist folder...")
+    console.log('Removing everything in dist folder...')
     await fsPromise.emptyDirAsync(outPath)
     await clone()
   }

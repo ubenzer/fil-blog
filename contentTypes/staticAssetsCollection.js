@@ -1,11 +1,11 @@
-import {staticAssetsPath, staticAssetsSubfolder} from "../config"
-import {chokidar$} from "../utils/chokidar"
-import globby from "globby"
-import {pathToIdPart} from "../utils/id"
+import {staticAssetsPath, staticAssetsSubfolder} from '../config'
+import {chokidar$} from '../utils/chokidar'
+import globby from 'globby'
+import {pathToIdPart} from '../utils/id'
 
 export const staticAssetsCollection = {
   children: async () =>
-    globby(["**/*"], {
+    globby(['**/*'], {
       cwd: staticAssetsPath,
       nodir: true
     })
