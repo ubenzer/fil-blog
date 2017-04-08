@@ -5,8 +5,8 @@ import {contentPath} from '../../config'
 import path from 'path'
 
 // Null stands for "original"
-const imageFormats = ['webp', null]
-const widths = [500, 1000, 1500, 2000]
+const imageFormats = [null]
+const widths = [200, 500, 1000, 1500, 2000]
 
 const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 

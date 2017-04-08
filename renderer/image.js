@@ -49,19 +49,13 @@ const availableSizesFor = ({id, imageMetas: allImageMetas, scaledImageIds: allSc
   }]
 }
 
-const calculateSourceTag = ({availableSizes}) => {
-  const imagesByMime = availableSizes.reduce((acc, as) => {
-    const imageMime = mime.lookup(as.ext)
+const calculateSrcsetString = ({availableSizes}) => {
+  const mimeImages = availableSizes.map((as) => {
     const url = urlForPostAttachment({id: as.id})
-    const mimeResources = [...acc[imageMime] || [], `${url} ${as.width}w`]
-    return {...acc, [imageMime]: mimeResources}
-  }, {})
+    return `${url} ${as.width}w`
+  })
 
-  return Object.keys(imagesByMime)
-    .map((m) => {
-      const mimeImages = imagesByMime[m]
-      return `<source type="${m}" srcset="${mimeImages.join(', ')}">`
-    })
+  return mimeImages.join(', ')
 }
 
 const calculateFallbackImageUrl = ({availableSizes, url}) => {
@@ -81,25 +75,24 @@ const calculateFallbackImageUrl = ({availableSizes, url}) => {
   return urlForPostAttachment({id: bestCandidate.id})
 }
 
-const imgTag = ({caption, classPartial, imageMeta, url}) =>
+const imgTag = ({caption, classPartial, imageMeta, srcSet, url}) =>
   `<img src="${url}" title="${caption}" alt="${caption}" ${classPartial} \
-${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ''}>`
+${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ''} \
+${srcSet ? `srcset="${srcSet}"` : ''}>`
 
 const aTag = ({innerHtml, url}) =>
   `<a href="${url}" target="_blank">${innerHtml}</a>`
 
-const renderAsPicture = ({availableSizes, caption, classPartial, imageMeta, renderAsLink, url}) => {
+const renderAsImgWithSrcset = ({availableSizes, caption, classPartial, imageMeta, renderAsLink, url}) => {
   const scaledImageUrl = calculateFallbackImageUrl({availableSizes, url})
-  const img = imgTag({caption, classPartial, imageMeta, url: scaledImageUrl})
+  const srcSet = calculateSrcsetString({availableSizes})
 
-  const sources = calculateSourceTag({availableSizes})
-
-  const picture = `<picture>${sources.join('\n')}${img}</picture>`
+  const img = imgTag({caption, classPartial, imageMeta, srcSet, url: scaledImageUrl})
 
   if (renderAsLink) {
-    return aTag({innerHtml: picture, url})
+    return aTag({innerHtml: img, url})
   }
-  return picture
+  return img
 }
 
 const renderAsImg = ({caption, classPartial, renderAsLink, url}) => {
@@ -159,7 +152,7 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     }
     const imageMeta = imageMetas.filter((im) => im.id === imageId)[0].meta
 
-    return renderAsPicture({availableSizes, caption, classPartial, imageMeta, renderAsLink, url})
+    return renderAsImgWithSrcset({availableSizes, caption, classPartial, imageMeta, renderAsLink, url})
   }
 }
 
