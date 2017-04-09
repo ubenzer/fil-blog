@@ -20,7 +20,7 @@ const extToSharpFormat = ({ext}) => extensionToSharpFormatMap[ext]
 const resizeByWidth = async ({src, width, ext}) =>
   sharp(src)
     .resize(width, null)
-    .toFormat(extToSharpFormat({ext}), {quality: 80})
+    .toFormat(extToSharpFormat({ext}), {quality: 60})
     .toBuffer()
     .catch((e) => {
       // For some reason promises rejected via sharp library doesn't have the stack trace. So I catch and rethrow them.
