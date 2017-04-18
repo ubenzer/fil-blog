@@ -24,13 +24,13 @@ const urlForTemplateJs = () => {
 
 const urlForPost = ({id}) => {
   const p = idToPath({id})
-  return slug(replaceall(path.sep, '/', p), {save: ['/']})
+  return slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})
 }
 
 const urlForPostAttachment = ({id}) => {
   // we get rid of post part of id (--->/post<---/2010/05/finaller/finaller-500.scaled.webp)
   const p = idToPath({id}).substr(postSubfolder.length + 1)
-  return slug(replaceall(path.sep, '/', p), {save: ['/', '.']})
+  return slug(replaceall(path.sep, '/', p), {save: ['/', '.', '-', '_']})
 }
 
 const urlForCollection = ({page: p}) => p === 0 ? '/' : `/${page}/${p + 1}` // eslint-disable-line no-confusing-arrow
