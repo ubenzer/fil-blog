@@ -6,7 +6,9 @@ import {isExternalUrl, isYoutube, urlForPostAttachment, youtubeUrlToId} from '..
 import mime from 'mime-types'
 import path from 'path'
 
-const FALLBACK_MAX_SIZE = 500
+const LOW_RES_SIZE = 50
+const DEFAULT_IMAGE_SIZE = 665
+const SMALL_IMAGE_SIZE = 200
 
 const calculateCaption = ({rawCaption}) => {
   const captionPairs = rawCaption.split('|')
@@ -18,12 +20,19 @@ const calculateRenderAsLink = ({rawCaption}) => {
   return captionPairs.indexOf('nolink') === -1
 }
 
-const calculateClassPartial = ({rawCaption}) => {
+const calculateClasses = ({rawCaption}) => {
   const captionPairs = rawCaption.split('|')
   captionPairs.pop()
-  let className = captionPairs.indexOf('right') > -1 ? 'right' : null
-  className = captionPairs.indexOf('left') > -1 ? 'left' : className
-  return className ? `class="${className}"` : ''
+  const classes = []
+  if (captionPairs.indexOf('right') > -1) {
+    classes.push('right')
+    classes.push('small')
+  }
+  if (captionPairs.indexOf('left') > -1) {
+    classes.push('left')
+    classes.push('small')
+  }
+  return classes
 }
 
 const availableSizesFor = ({id, imageMetas: allImageMetas, scaledImageIds: allScaledImages}) => {
@@ -58,8 +67,7 @@ const calculateSrcsetString = ({availableSizes}) => {
   return mimeImages.join(', ')
 }
 
-const calculateFallbackImageUrl = ({availableSizes, url}) => {
-  const originalMime = mime.lookup(path.extname(url).substr(1))
+const getImageByMaxWidth = ({availableSizes, maxWidth, mime: originalMime}) => {
   const sortedImages = availableSizes
     .filter((as) => mime.lookup(as.ext) === originalMime)
     .sort((a, b) => a.width - b.width)
@@ -67,27 +75,55 @@ const calculateFallbackImageUrl = ({availableSizes, url}) => {
   let bestCandidate = sortedImages[0]
 
   sortedImages.forEach((si) => {
-    if (si.width > bestCandidate.width && si.width < FALLBACK_MAX_SIZE) {
+    if (si.width > bestCandidate.width && si.width < maxWidth) {
       bestCandidate = si
     }
   })
 
-  return urlForPostAttachment({id: bestCandidate.id})
+  return bestCandidate
 }
 
-const imgTag = ({caption, classPartial, imageMeta, srcSet, url}) =>
-  `<img src="${url}" title="${caption}" alt="${caption}" ${classPartial} \
-${imageMeta ? `width="${imageMeta.width}" height="${imageMeta.height}"` : ''} \
-${srcSet ? `srcset="${srcSet}"` : ''}>`
+const imgTag = ({caption, classes, height, width, srcSet, src, lowresSrc}) =>
+  `<span class="img fade-box ${classes.join(' ')}">
+    <img class="fade-box__lores" src="${lowresSrc}" alt="${caption}" width="${width}" height="${height}">
+    <img class="lazyload fade-box__hires" data-src="${src}" title="${caption}" alt="${caption}"\
+width="${width}" height="${height}" data-srcset="${srcSet}">
+  </span>
+`
+const simpleImgTag = ({caption, classes, src}) =>
+  `<img src="${src}" title="${caption}" alt="${caption}"${classes.length > 0 ? ` class="${classes.join(' ')}"` : ''}>`
 
 const aTag = ({innerHtml, url}) =>
   `<a href="${url}" target="_blank">${innerHtml}</a>`
 
-const renderAsImgWithSrcset = ({availableSizes, caption, classPartial, imageMeta, renderAsLink, url}) => {
-  const scaledImageUrl = calculateFallbackImageUrl({availableSizes, url})
+const renderAsImgWithSrcset = ({availableSizes, caption, classes, imageMeta, renderAsLink, url}) => {
+  const allClasses = [...classes]
+  const imageMime = mime.lookup(path.extname(url).substr(1))
+  const fallbackImageUrl = urlForPostAttachment({
+    id: getImageByMaxWidth({
+      availableSizes,
+      maxWidth: allClasses.indexOf('small') > -1 ? SMALL_IMAGE_SIZE : DEFAULT_IMAGE_SIZE,
+      mime: imageMime
+    }).id
+  })
+  const lowResImageUrl = urlForPostAttachment({
+    id: getImageByMaxWidth({
+      availableSizes,
+      maxWidth: LOW_RES_SIZE,
+      mime: imageMime
+    }).id
+  })
+
   const srcSet = calculateSrcsetString({availableSizes})
-
-  const img = imgTag({caption, classPartial, imageMeta, srcSet, url: scaledImageUrl})
+  const img = imgTag({
+    caption,
+    classes: allClasses,
+    height: imageMeta.height,
+    lowresSrc: lowResImageUrl,
+    src: fallbackImageUrl,
+    srcSet,
+    width: imageMeta.width
+  })
 
   if (renderAsLink) {
     return aTag({innerHtml: img, url})
@@ -95,19 +131,12 @@ const renderAsImgWithSrcset = ({availableSizes, caption, classPartial, imageMeta
   return img
 }
 
-const renderAsImg = ({caption, classPartial, renderAsLink, url}) => {
-  const img = imgTag({caption, classPartial, url})
-  if (renderAsLink) {
-    return aTag({innerHtml: img, url})
-  }
-  return img
-}
-
-const renderAsYoutube = ({classPartial, url}) => {
+const renderAsYoutube = ({classes, url}) => {
   const youtubeVideoId = youtubeUrlToId({url})
+  const allClasses = ['youtube', 'video', ...classes]
 
   return (
-    `<div class="youtube video ${classPartial}">
+    `<div class="${allClasses.join(' ')}">
        <iframe type="text/html" src="https://www.youtube.com/embed/${youtubeVideoId}?modestbranding=1&amp;showinfo=0\
 &amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
      </div>
@@ -115,11 +144,15 @@ const renderAsYoutube = ({classPartial, url}) => {
   )
 }
 
-const renderExternal = ({caption, classPartial, renderAsLink, url: rawUrl}) => {
-  if (isYoutube({url: rawUrl})) {
-    return renderAsYoutube({classPartial, url: rawUrl})
+const renderAsImg = ({caption, classes, renderAsLink, url}) => {
+  if (isYoutube({url})) {
+    return renderAsYoutube({classes, url})
   }
-  return renderAsImg({caption, classPartial, renderAsLink, url: rawUrl})
+  const img = simpleImgTag({caption, classes, src: url})
+  if (renderAsLink) {
+    return aTag({innerHtml: img, url})
+  }
+  return img
 }
 
 export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) => {
@@ -131,17 +164,18 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     const rawCaption = token.content
 
     const caption = calculateCaption({rawCaption})
-    const classPartial = calculateClassPartial({rawCaption})
+    const classes = calculateClasses({rawCaption})
     const renderAsLink = calculateRenderAsLink({rawCaption})
 
     if (isExternalUrl({url: rawUrl})) {
-      return renderExternal({caption, classPartial, renderAsLink, url: rawUrl})
+      return renderAsImg({caption, classes, renderAsLink, url: rawUrl})
     }
 
     const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
     const url = urlForPostAttachment({id: imageId})
     if (!isPathImage({p: urlToPath({url})})) {
-      return renderAsImg({caption, classPartial, renderAsLink, url})
+      // gifs and svgs goes into this if
+      return renderAsImg({caption, classes, renderAsLink, url})
     }
 
     const id = idForPostAttachment({type: 'image', url})
@@ -152,7 +186,7 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
     }
     const imageMeta = imageMetas.filter((im) => im.id === imageId)[0].meta
 
-    return renderAsImgWithSrcset({availableSizes, caption, classPartial, imageMeta, renderAsLink, url})
+    return renderAsImgWithSrcset({availableSizes, caption, classes, imageMeta, renderAsLink, url})
   }
 }
 

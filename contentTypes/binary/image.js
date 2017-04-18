@@ -6,7 +6,7 @@ import path from 'path'
 
 // Null stands for "original"
 const imageFormats = [null]
-const widths = [200, 500, 1000, 1500, 2000]
+const widths = [50, 200, 500, 1000, 1500, 2000]
 
 const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 
