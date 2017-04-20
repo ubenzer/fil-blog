@@ -79,7 +79,7 @@ const idForPost = ({postIds, url}) =>
 
 const idForCollection = ({url}) => {
   if (url.length === 1) { return {page: 0} }
-  const pageNumberStr = url.substr(page.length + 2)
+  const pageNumberStr = url.substr(page.length + 2, url.length - page.length - 3)
   return {page: Number(pageNumberStr) - 1}
 }
 

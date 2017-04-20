@@ -1,5 +1,20 @@
-import {isExternalUrl, urlForPostAttachment} from '../utils/url'
+import {isExternalUrl, urlForPost, urlForPostAttachment} from '../utils/url'
 import {postIdToAttachmentId} from '../utils/id'
+
+const POST_LINK_PREFIX = 'post@'
+
+const postUrlGenerator = ({rawUrl}) => urlForPost({id: rawUrl})
+const postAttachmentUrlGenerator = ({rawUrl, postId}) => {
+  const attachmentId = postIdToAttachmentId({attachmentRelativeUrl: rawUrl, postId})
+  return urlForPostAttachment({id: attachmentId})
+}
+
+const getRealUrlForMarkdownUrl = ({rawUrl, postId}) => {
+  if (rawUrl.startsWith(POST_LINK_PREFIX)) {
+    return postUrlGenerator({postId, rawUrl})
+  }
+  return postAttachmentUrlGenerator({postId, rawUrl})
+}
 
 const calculateShouldOpenInNewTab = ({isUrlExternal}) => isUrlExternal
 
@@ -20,8 +35,7 @@ export const markdownLinkParser = (md, {postId}) => {
       return renderLinkOpen({inNewTab, url: rawUrl})
     }
 
-    const attachmentId = postIdToAttachmentId({attachmentRelativeUrl: rawUrl, postId})
-    const url = urlForPostAttachment({id: attachmentId})
+    const url = getRealUrlForMarkdownUrl({postId, rawUrl})
 
     return renderLinkOpen({inNewTab, url})
   }

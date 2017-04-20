@@ -24,7 +24,7 @@ const urlForTemplateJs = () => {
 
 const urlForPost = ({id}) => {
   const p = idToPath({id})
-  return slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})
+  return `${slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})}/`
 }
 
 const urlForPostAttachment = ({id}) => {
@@ -33,7 +33,7 @@ const urlForPostAttachment = ({id}) => {
   return slug(replaceall(path.sep, '/', p), {save: ['/', '.', '-', '_']})
 }
 
-const urlForCollection = ({page: p}) => p === 0 ? '/' : `/${page}/${p + 1}` // eslint-disable-line no-confusing-arrow
+const urlForCollection = ({page: p}) => p === 0 ? '/' : `/${page}/${p + 1}/` // eslint-disable-line no-confusing-arrow
 
 const urlForSitemap = () => '/sitemap.xml'
 

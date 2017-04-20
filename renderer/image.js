@@ -88,6 +88,7 @@ const imgTag = ({caption, classes, height, width, srcSet, src, lowresSrc}) =>
     <img class="fade-box__lores" src="${lowresSrc}" alt="${caption}" width="${width}" height="${height}">
     <img class="lazyload fade-box__hires" data-src="${src}" title="${caption}" alt="${caption}"\
 width="${width}" height="${height}" data-srcset="${srcSet}">
+    <span style="padding-top: ${height / width * 100}%" class="fade-box__aspect_ratio_el">&nbsp;</span>
   </span>
 `
 const simpleImgTag = ({caption, classes, src}) =>
@@ -137,8 +138,8 @@ const renderAsYoutube = ({classes, url}) => {
 
   return (
     `<div class="${allClasses.join(' ')}">
-       <iframe type="text/html" src="https://www.youtube.com/embed/${youtubeVideoId}?modestbranding=1&amp;showinfo=0\
-&amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen"></iframe>
+       <iframe type="text/html" data-src="https://www.youtube.com/embed/${youtubeVideoId}?modestbranding=1&amp;\
+showinfo=0&amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen" class="lazyload"></iframe>
      </div>
     `
   )
