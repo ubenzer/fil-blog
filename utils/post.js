@@ -1,5 +1,6 @@
 import emoji from 'markdown-it-emoji'
 import frontMatter from 'front-matter'
+import markdownHighlightJs from 'markdown-it-highlightjs'
 import {markdownImageParser} from '../renderer/image'
 import markdownIt from 'markdown-it'
 import {markdownLinkParser} from '../renderer/link'
@@ -29,6 +30,7 @@ const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds})
   const md = markdownIt()
     .use(markdownImageParser, {imageMetas, postId: id, scaledImageIds})
     .use(markdownLinkParser, {postId: id})
+    .use(markdownHighlightJs, {})
     .use(emoji)
 
   const separatedContent = markdownContent.split('---more---')
