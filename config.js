@@ -22,6 +22,8 @@ export const themeColor = '#2196F3'
 export const baseUrl = 'https://ubenzer.com'
 export const dateFormat = 'LL'
 export const locale = 'tr'
+export const ogLocale = 'tr_TR'
+export const fbAppId = '106731154350'
 
 // Template strings
 export const readPost = 'Devamını oku'

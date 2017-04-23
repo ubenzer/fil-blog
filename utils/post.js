@@ -1,9 +1,13 @@
+import cheerio from 'cheerio'
+import debugc from 'debug'
 import emoji from 'markdown-it-emoji'
 import frontMatter from 'front-matter'
 import markdownHighlightJs from 'markdown-it-highlightjs'
 import {markdownImageParser} from '../renderer/image'
 import markdownIt from 'markdown-it'
 import {markdownLinkParser} from '../renderer/link'
+
+const debug = debugc('fil:utils:post')
 
 const extractTitleFromMarkdown = ({markdown}) => {
   const lines = markdown.split('\n')
@@ -53,6 +57,27 @@ const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds})
   }
 }
 
+const getDescription = ({htmlContent}) => {
+  const $ = cheerio.load(htmlContent)
+  return $('p')
+    .first()
+    .text()
+    .trim()
+}
+
+const getPostImage = ({htmlContent}) => {
+  const $ = cheerio.load(htmlContent)
+  const linkUrl = $('.img.big')
+    .first()
+    .parent('a')
+    .attr('href')
+  if (linkUrl) {
+    return linkUrl
+  }
+  // More alternatives could be added
+  return null
+}
+
 const rawContentToPostObject = async ({id, imageMetas, rawFileContent, scaledImageIds}) => {
   const doc = frontMatter(rawFileContent)
   const createDate = doc.attributes.created
@@ -63,12 +88,20 @@ const rawContentToPostObject = async ({id, imageMetas, rawFileContent, scaledIma
   const markdownContent = extractedTitleObject.content
   const title = typeof doc.attributes.title === 'string' ? doc.attributes.title : extractedTitleObject.title
   const {htmlContent, htmlExcerpt} = calculateHtmlContent({id, imageMetas, markdownContent, scaledImageIds})
+  const imgUrl = getPostImage({htmlContent})
+  const description = getDescription({htmlContent})
+
+  if (imgUrl === null) {
+    debug(`No post image found for ${id}`)
+  }
 
   return {
     createDate,
+    description,
     editDate,
     htmlContent,
     htmlExcerpt,
+    imgUrl,
     taxonomy,
     title
   }

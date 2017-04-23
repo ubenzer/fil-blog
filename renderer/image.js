@@ -27,10 +27,12 @@ const calculateClasses = ({rawCaption}) => {
   if (captionPairs.indexOf('right') > -1) {
     classes.push('right')
     classes.push('small')
-  }
-  if (captionPairs.indexOf('left') > -1) {
+  } else if (captionPairs.indexOf('left') > -1) {
     classes.push('left')
     classes.push('small')
+  } else {
+    classes.push('center')
+    classes.push('big')
   }
   return classes
 }
