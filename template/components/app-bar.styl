@@ -1,0 +1,41 @@
+.app-bar
+  display flex
+  align-items center
+  position fixed
+  height 56px
+  padding 12px 10px
+  top 0
+  left 0
+  right 0
+  z-index 1
+  shadow-1()
+  primary-block()
+
+  +gt-sm()
+    transition all 0.3s ease-in-out
+    background-color transparent
+    shadow-0()
+    color rgba(255, 255, 255, 0.8)
+    text-shadow 0 0 5px rgba(0, 0, 0, 0.8)
+
+.app-bar_opaque
+  shadow-1()
+  primary-block()
+  text-shadow none
+
+.app-bar__title
+  height 36px
+  line-height 36px
+  margin 0
+  padding 0 16px
+
+.app-bar__title-link
+  &, &:visited
+    display inline-block
+    height 36px
+    line-height 36px
+    font-weight 500
+    font-size 20px
+    color $text_default_light
+    margin 0
+    text-decoration none

@@ -1,0 +1,10 @@
+.header
+  align-items stretch
+  display flex
+  flex-flow column
+  height $header_height
+  background url(/img/sidenav-bg.jpg) center top no-repeat
+  background-size cover
+  background-color $background_primary
+  +gt-sm()
+    margin-bottom -1 * ($header_height / 2)
