@@ -1,5 +1,5 @@
 import {dateSorter, postDateSelector, sort} from '../utils/sorting'
-import {postsPerPage, templatePath} from '../config'
+import {postsPerPage, templatePath} from '../../config'
 import React from 'react'
 import {calculatePagination} from '../utils/collection'
 import {defaultHeadersFor} from '../utils/http'

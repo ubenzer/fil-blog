@@ -1,7 +1,6 @@
-import {cachePath, outPath, templatePath} from './config'
+import {cachePath, outPath, templatePath} from '../config'
 import {binaryPassthroughHandler} from './routes/postAttachmentPassthroughHandler'
 import {chokidar$} from './utils/chokidar'
-import {cssCollection} from './contentTypes/templateItems/cssCollection'
 import {file} from './contentTypes/binary/file'
 import {hashOf} from './utils/hash'
 import {image} from './contentTypes/binary/image'
@@ -16,7 +15,6 @@ import {sitemapHandler} from './routes/sitemapHandler'
 import {staticAssetHandler} from './routes/staticAssetHandler'
 import {staticAssetsCollection} from './contentTypes/staticAssetsCollection'
 import {stylus} from './contentTypes/templateItems/stylus'
-import {templateCssHandler} from './routes/templateCssHandler'
 import {templateJsHandler} from './routes/templateJsHandler'
 import {templateStylusHandler} from './routes/templateStylusHandler'
 
@@ -24,7 +22,6 @@ import {templateStylusHandler} from './routes/templateStylusHandler'
 const project = {
   cachePath: () => cachePath,
   contentTypes: () => ({
-    cssCollection,
     file,
     image,
     js,
@@ -36,7 +33,7 @@ const project = {
     stylus
   }),
   async contentVersion() {
-    return hashOf({p: './contents'})
+    return hashOf({p: '.'})
   },
   outPath: () => outPath,
   routeHandlers: () => ({
@@ -45,7 +42,6 @@ const project = {
     singlePostHandler,
     sitemapHandler,
     staticAssetHandler,
-    templateCssHandler,
     templateJsHandler,
     templateStylusHandler
   }),
@@ -53,7 +49,7 @@ const project = {
   watcher$: () =>
     chokidar$([
       `${templatePath}/**/*.js`,
-      'app/config.js'
+      'config.js'
     ], {ignoreInitial: true})
 }
 

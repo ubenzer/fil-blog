@@ -1,14 +1,14 @@
 import babel from 'rollup-plugin-babel'
 import {chokidar$} from '../../utils/chokidar'
 import commonjs from 'rollup-plugin-commonjs'
-import {frontendJsPath} from '../../config'
+import {jsPath} from '../../../config'
 import nodeResolve from 'rollup-plugin-node-resolve'
 import path from 'path'
 import {rollup} from 'rollup'
 
 const js = {
   content: async () => {
-    const p = path.join(frontendJsPath, 'index.js')
+    const p = path.join(jsPath, 'index.js')
 
     return rollup({
       entry: p,
@@ -32,7 +32,7 @@ const js = {
       return {content: code}
     })
   },
-  contentWatcher$: () => chokidar$(`${frontendJsPath}/**/*.js`, {ignoreInitial: true})
+  contentWatcher$: () => chokidar$(`${jsPath}/**/*.js`, {ignoreInitial: true})
 }
 
 export {js}

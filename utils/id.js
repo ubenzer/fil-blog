@@ -1,4 +1,4 @@
-import {page, postSubfolder, staticAssetsSubfolder} from '../config'
+import {page, postSymbol, staticAssetPath} from '../../config'
 import {IMAGE_EXTENSIONS} from './image'
 import path from 'path'
 import replace from 'replaceall'
@@ -57,7 +57,7 @@ const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
   const postPath = idToPath({id: postId})
   const relPath = urlToPath({url: relativeUrl})
   const absPath = path.join(postPath, relPath)
-  return `${type}@/${postSubfolder}${pathToIdPart({p: absPath})}`
+  return `${type}@/${postSymbol}${pathToIdPart({p: absPath})}`
 }
 
 const postIdToImageId = ({postId, imageRelativeUrl}) =>
@@ -66,11 +66,11 @@ const postIdToImageId = ({postId, imageRelativeUrl}) =>
 const postIdToAttachmentId = ({postId, attachmentRelativeUrl}) =>
   postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl, type: 'file'})
 
-const idForPostAttachment = ({url, type}) => `${type}@/${postSubfolder}${url}`
+const idForPostAttachment = ({url, type}) => `${type}@/${postSymbol}${url}`
 
 const idForTemplateCss = ({url}) => `file@${url}`
 
-const idForStaticAsset = ({url}) => `file@${staticAssetsSubfolder}${url}`
+const idForStaticAsset = ({url}) => `file@${staticAssetPath}${url}`
 
 const idForPost = ({postIds, url}) =>
   postIds

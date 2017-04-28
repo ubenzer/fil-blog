@@ -4,7 +4,7 @@ import {idForPost} from '../utils/id'
 import path from 'path'
 import {render} from '../utils/template'
 import {requireUncached} from '../utils/require'
-import {templatePath} from '../config'
+import {templatePath} from '../../config'
 import {urlForPost} from '../utils/url'
 
 const singlePostHandler = {

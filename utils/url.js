@@ -1,4 +1,4 @@
-import {page, postSubfolder, staticAssetsSubfolder, templateSubfolder} from '../config'
+import {page, postSymbol, templateSymbol} from '../../config'
 import {idToPath} from './id'
 import path from 'path'
 import replaceall from 'replaceall'
@@ -8,19 +8,13 @@ const urlForTemplateCss = ({id}) => replaceall(path.sep, '/', idToPath({id}))
 
 const urlForStaticAsset = ({id}) => {
   // we get rid of post part of id (--->/static<---/robots.txt)
-  const p = idToPath({id}).substr(staticAssetsSubfolder.length + 1)
+  const p = idToPath({id})
   return replaceall(path.sep, '/', p)
 }
 
-const urlForTemplateStylus = () => {
-  const p = replaceall(path.sep, '/', templateSubfolder)
-  return `/${p}/ui.css`
-}
+const urlForTemplateStylus = () => '/ui.css'
 
-const urlForTemplateJs = () => {
-  const p = replaceall(path.sep, '/', templateSubfolder)
-  return `/${p}/app.js`
-}
+const urlForTemplateJs = () => '/app.js'
 
 const urlForPost = ({id}) => {
   const p = idToPath({id})
@@ -29,7 +23,7 @@ const urlForPost = ({id}) => {
 
 const urlForPostAttachment = ({id}) => {
   // we get rid of post part of id (--->/post<---/2010/05/finaller/finaller-500.scaled.webp)
-  const p = idToPath({id}).substr(postSubfolder.length + 1)
+  const p = idToPath({id}).substr(postSymbol.length + 1)
   return slug(replaceall(path.sep, '/', p), {save: ['/', '.', '-', '_']})
 }
 

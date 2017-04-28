@@ -1,5 +1,5 @@
 import {fromGeneratedImagePath, idToPath, pathToIdPart} from '../../utils/id'
-import {contentPath} from '../../config'
+import {contentPath} from '../../../config'
 import path from 'path'
 import {resizeByWidth} from '../../utils/image'
 

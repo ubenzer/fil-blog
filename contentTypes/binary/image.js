@@ -1,7 +1,7 @@
 import {compress, meta} from '../../utils/image'
 import {idToPath, pathToIdPart, toGeneratedImagePath} from '../../utils/id'
 import {chokidarChangeFile$} from '../../utils/chokidar'
-import {contentPath} from '../../config'
+import {contentPath} from '../../../config'
 import path from 'path'
 
 // Null stands for "original"

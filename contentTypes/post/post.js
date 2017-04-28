@@ -1,6 +1,6 @@
 import {chokidar$, chokidarAddRemoveFile$} from '../../utils/chokidar'
 import {idToPath, idToType, isPathImage, pathToIdPart} from '../../utils/id'
-import {postPath, postSubfolder} from '../../config'
+import {postPath, postSymbol} from '../../../config'
 import {fsPromise} from '../../utils/fs'
 import globby from 'globby'
 import path from 'path'
@@ -19,7 +19,7 @@ export const post = {
         const childPath = path.join(p, file)
         const childId = pathToIdPart({p: childPath})
 
-        return isPathImage({p: childPath}) ? `image@/${postSubfolder}${childId}` : `file@/${postSubfolder}${childId}`
+        return isPathImage({p: childPath}) ? `image@/${postSymbol}${childId}` : `file@/${postSymbol}${childId}`
       })
     )
   },
