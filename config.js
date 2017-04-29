@@ -27,8 +27,8 @@ export const outPath = './dist'
 export const remoteRepoUrl = 'git@github.com:ubenzer/ubenzer.github.io.git'
 
 // Template config
-export const defaultTitle = 'UBenzer'
-export const titleTemplate = '%s - UBenzer'
+export const defaultTitle = 'Default Fil Blog'
+export const titleTemplate = '%s - Fil'
 export const themeColor = '#2196F3'
 export const baseUrl = 'https://ubenzer.com'
 export const dateFormat = 'LL'
