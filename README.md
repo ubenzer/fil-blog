@@ -1,3 +1,11 @@
+# Please disregard everything in this README. It is not working yet.
+
+# How to start your own blog in 5 minute
+1. Clone this repository
+2. npm i
+3. Edit your config
+4. npm start
+5. npm run publish
 
 # (Optionally) Getting updates
 If you want, you can get updates to either application logic part of
