@@ -1,0 +1,21 @@
+.main-container
+  width: 100%
+  max-width 1000px
+  display flex
+  justify-content center
+  align-self center
+  margin 0 auto
+
+.main-content
+  flex-grow 1
+  max-width 740px
+
+.main-container__items
+  margin 5px
+  +gt-sm()
+    margin 20px
+
+.main-content__sidebar
+  width 25%
+  flex-grow 0
+  flex-shrink 0
