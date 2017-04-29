@@ -1,0 +1,62 @@
+.blog-post__body
+  overflow auto
+  .img
+    display block
+    max-width 100%
+    height auto
+    &.right
+      margin 0 auto // Used in smaller screens
+      width 200px
+      display block
+      +gt-sm()
+        float right
+
+  .fade-box
+    position relative
+    overflow hidden
+  .fade-box__aspect_ratio_el
+    display block
+    font-size 0
+    line-height 0
+  .fade-box .lazyload,
+  .fade-box .lazyloading
+    opacity 0;
+  .fade-box .lazyloaded
+    opacity 1
+  .fade-box__lores,
+  .fade-box__hires
+    width 100%
+    height auto
+    position absolute
+    left 0
+    right 0
+    top 0
+    transition opacity 400ms
+
+  .youtube
+    position relative
+    padding-bottom 56.25%
+    padding-top 0
+    height 0
+    iframe
+      position absolute
+      top 0
+      left 0
+      width 100%
+      height 100%
+
+.blog-post__date
+  text-transform uppercase
+  color $text_secondary
+  margin-bottom 10px
+
+.blog-post__title
+  &, &:visited {
+    font-weight 400
+    color $text_primary
+    text-decoration none
+    font-size 32px
+    line-height 32px
+    margin 0 0 24px
+  }
+
