@@ -20,7 +20,7 @@ All delivered via git subtree.
 ## Instructions
 1. Add remotes
 ```sh
-git remote add app git@github.com:ubenzer/fil-blog-app.git
+git remote add app git@github.com:ubenzer/fil-blog-partial-app.git
 git remote add site git@github.com:ubenzer/fil-blog-partial-site.git
 ```
 
