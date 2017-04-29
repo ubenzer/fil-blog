@@ -15,3 +15,11 @@ All delivered via git subtree.
 git remote add app git@github.com:ubenzer/fil-blog-app.git
 git remote add site git@github.com:ubenzer/fil-blog-partial-site.git
 ```
+
+### Initial subtree setup
+This is for development purposes. The following commands are useful to
+setup an initial repository.
+```sh
+git subtree add --prefix=app app master
+git subtree add --prefix=site site master
+```
