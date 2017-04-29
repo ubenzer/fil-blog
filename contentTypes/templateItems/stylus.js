@@ -2,7 +2,7 @@ import {cssPath, templatePath} from '../../../config'
 import CleanCSS from 'clean-css'
 import Promise from 'bluebird'
 import {chokidar$} from '../../utils/chokidar'
-import {fsPromise} from '../../utils/fs'
+import fs from 'fs-extra'
 import path from 'path'
 import stylus from 'stylus'
 
@@ -21,7 +21,7 @@ cleanCss.minifyAsync = Promise.promisify(cleanCss.minify)
 const styls = {
   content: async () => {
     const p = path.join(cssPath, 'index.styl')
-    const strContent = await fsPromise.readFileAsync(p, 'utf8')
+    const strContent = await fs.readFile(p, 'utf8')
 
     return renderAsync(strContent, {filename: p})
       .then((css) => cleanCss.minifyAsync(css))

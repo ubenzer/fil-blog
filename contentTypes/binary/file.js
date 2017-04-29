@@ -1,13 +1,13 @@
 import {chokidarChangeFile$} from '../../utils/chokidar'
 import {contentPath} from '../../../config'
-import {fsPromise} from '../../utils/fs'
+import fs from 'fs-extra'
 import {idToPath} from '../../utils/id'
 import path from 'path'
 
 export const file = {
   content: async ({id}) => {
     const p = idToPath({id})
-    const content = await fsPromise.readFileAsync(path.join(contentPath, p))
+    const content = await fs.readFile(path.join(contentPath, p))
 
     return {content}
   },

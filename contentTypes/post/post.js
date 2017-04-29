@@ -1,7 +1,7 @@
 import {chokidar$, chokidarAddRemoveFile$} from '../../utils/chokidar'
 import {idToPath, idToType, isPathImage, pathToIdPart} from '../../utils/id'
 import {postPath, postSymbol} from '../../../config'
-import {fsPromise} from '../../utils/fs'
+import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
 import {rawContentToPostObject} from '../../utils/post'
@@ -29,7 +29,7 @@ export const post = {
       ignored: ['**/.*', path.join(postPath, idToPath({id}), 'index.md'), '**/']
     }),
   content: async ({id, imageMetas, scaledImageIds}) => {
-    const rawFileContent = await fsPromise.readFileAsync(path.join(postPath, idToPath({id}), 'index.md'), 'utf8')
+    const rawFileContent = await fs.readFile(path.join(postPath, idToPath({id}), 'index.md'), 'utf8')
     const p = await rawContentToPostObject({id, imageMetas, rawFileContent, scaledImageIds})
     return {id, ...p}
   },
