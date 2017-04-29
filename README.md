@@ -30,4 +30,6 @@ setup an initial repository.
 ```sh
 git subtree add --prefix=app app master
 git subtree add --prefix=site site master
+git subtree push -P app app master
+git subtree push -P site site master
 ```
