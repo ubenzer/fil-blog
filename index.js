@@ -1,4 +1,4 @@
-import {cachePath, outPath, templatePath} from '../config'
+import {cachePath, deployConfig, outPath, templatePath} from '../config'
 import {binaryPassthroughHandler} from './routes/postAttachmentPassthroughHandler'
 import {chokidar$} from './utils/chokidar'
 import {file} from './contentTypes/binary/file'
@@ -35,6 +35,7 @@ const project = {
   async contentVersion() {
     return hashOf({p: '.'})
   },
+  deployConfig: () => deployConfig,
   outPath: () => outPath,
   routeHandlers: () => ({
     binaryPassthroughHandler,
