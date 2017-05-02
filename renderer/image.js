@@ -151,7 +151,8 @@ const renderAsImg = ({caption, classes, renderAsLink, url}) => {
   if (isYoutube({url})) {
     return renderAsYoutube({classes, url})
   }
-  const img = simpleImgTag({caption, classes, src: url})
+  const normalizedClasses = ['img', ...classes]
+  const img = simpleImgTag({caption, classes: normalizedClasses, src: url})
   if (renderAsLink) {
     return aTag({innerHtml: img, url})
   }
