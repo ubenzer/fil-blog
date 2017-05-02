@@ -1,5 +1,3 @@
-# Please disregard everything in this README. It is not working yet.
-
 # How to start your own blog in 5 minute
 1. Clone this repository
 2. npm i
@@ -23,7 +21,12 @@ All delivered via git subtree.
 git remote add app git@github.com:ubenzer/fil-blog-partial-app.git
 git remote add site git@github.com:ubenzer/fil-blog-partial-site.git
 ```
-
+2. Fetch latest changes to `app` or `site` part of the project. Use regular get conflict resolution if needed.
+```sh
+git subtree pull -P app app master
+git subtree pull -P site site master
+```
+ 
 ### Initial subtree setup
 This is for development purposes. The following commands are useful to
 setup an initial repository.

@@ -1,8 +1,12 @@
 {
   "name": "fil-blog",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Starter blog project for fil. Clone this project to start your own blog.",
   "scripts": {
+    "sync": "fil-deploy-sync",
+    "clean": "fil-deploy-clean",
+    "deploy": "fil-deploy-deploy",
+    "publish": "npm run sync && npm run clean && npm run generate && npm run deploy",
     "generate": "fil",
     "start": "fil --dynamic",
     "lint": "eslint .",
@@ -21,6 +25,8 @@
     "chokidar": "^1.6.1",
     "clean-css": "^4.0.12",
     "document-offset": "^1.0.4",
+    "fil": "^4.0.2",
+    "fil-deploy-github-pages": "0.0.3",
     "folder-hash": "^1.1.1",
     "front-matter": "^2.1.2",
     "fs-extra": "^3.0.0",
