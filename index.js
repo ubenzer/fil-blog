@@ -15,8 +15,8 @@ import {sitemapHandler} from './routes/sitemapHandler'
 import {staticAssetHandler} from './routes/staticAssetHandler'
 import {staticAssetsCollection} from './contentTypes/staticAssetsCollection'
 import {stylus} from './contentTypes/templateItems/stylus'
-import {templateJsHandler} from './routes/templateJsHandler'
-import {templateStylusHandler} from './routes/templateStylusHandler'
+import {templateJsHandler} from './routes/template/jsHandler'
+import {templateStylusHandler} from './routes/template/stylusHandler'
 
 // noinspection JSUnusedGlobalSymbols
 const project = {
