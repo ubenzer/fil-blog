@@ -1,4 +1,5 @@
 import {cachePath, deployConfig, outPath, templatePath} from '../config'
+import {aboutMePageHandler} from './routes/page/aboutMe'
 import {binaryPassthroughHandler} from './routes/postAttachmentPassthroughHandler'
 import {chokidar$} from './utils/chokidar'
 import {file} from './contentTypes/binary/file'
@@ -38,6 +39,7 @@ const project = {
   deployConfig: () => deployConfig,
   outPath: () => outPath,
   routeHandlers: () => ({
+    aboutMePageHandler,
     binaryPassthroughHandler,
     recentPostsCollectionHandler,
     singlePostHandler,
