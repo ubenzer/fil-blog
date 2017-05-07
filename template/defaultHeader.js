@@ -10,7 +10,7 @@ const DefaultHeader = () =>
     link={[
       {href: urlForTemplateStylus(), media: 'screen', rel: 'stylesheet', type: 'text/css'},
       {
-        href: 'https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&amp;subset=latin-ext', // eslint-disable-line max-len
+        href: 'https://fonts.googleapis.com/css?family=Open+Sans:300,400italic,700italic,700,400&amp;subset=latin-ext', // eslint-disable-line max-len
         media: 'screen',
         rel: 'stylesheet',
         type: 'text/css'

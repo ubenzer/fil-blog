@@ -15,8 +15,8 @@ const BlogPost = ({post, renderExcerpt}) => {
         {moment(post.createDate).locale(locale)
           .format(dateFormat)}
       </div>
-      <h1>
-        <a className="blog-post__title" href={postUrl}>{post.title}</a>
+      <h1 className="blog-post__title">
+        <a href={postUrl}>{post.title}</a>
       </h1>
       {renderExcerpt &&
         <div className="markdown-content blog-post__body blog-post__excerpt"

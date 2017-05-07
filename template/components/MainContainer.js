@@ -6,15 +6,22 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {Sidebar} from './Sidebar'
 
-const MainContainer = ({children}) =>
+const getClassName = ({fullWidth}) => {
+  const classes = ['main-container__main-content']
+  if (fullWidth) {
+    classes.push('main-container__main-content--full')
+  }
+  return classes.join(' ')
+}
+const MainContainer = ({bigHeader, children, fullWidth}) =>
   <div>
     <DefaultHeader />
-    <Header />
+    <Header bigHeader={bigHeader} />
     <div className="main-container">
-      <div className="main-content">
+      <div className={getClassName({fullWidth})}>
         {children}
       </div>
-      <Sidebar />
+      {!fullWidth && <Sidebar />}
     </div>
     <div className="main-container">
       <Footer />
@@ -22,6 +29,15 @@ const MainContainer = ({children}) =>
     </div>
   </div>
 
-MainContainer.propTypes = {children: PropTypes.arrayOf(PropTypes.element).isRequired}
+MainContainer.defaultProps = {
+  bigHeader: false,
+  fullWidth: false
+}
+
+MainContainer.propTypes = {
+  bigHeader: PropTypes.bool,
+  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  fullWidth: PropTypes.bool
+}
 
 export {MainContainer}

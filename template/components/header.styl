@@ -8,3 +8,7 @@
   background-color $background_primary
   +gt-sm()
     margin-bottom -1 * ($header_height / 2)
+
+.header--big
+  height $header_big_height
+  margin-bottom "calc(%s + 22rem)" % ($header_big_height * -1)
