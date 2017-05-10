@@ -1,4 +1,4 @@
-import {page, postSymbol, templateSymbol} from '../../config'
+import {page, postSymbol} from '../../config'
 import {idToPath} from './id'
 import path from 'path'
 import replaceall from 'replaceall'
