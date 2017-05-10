@@ -36,6 +36,9 @@ const isExternalUrl = ({url}) => url.includes('://') || url.startsWith('//')
 // Source: http://stackoverflow.com/a/27728417/158523
 const ytPattern = /^.*(?:(?:youtu\.be\/|v\/|vi\/|u\/\w\/|embed\/)|(?:(?:watch)?\?v(?:i)?=|&v(?:i)?=))([^#&?]*).*/
 
+// Source: http://stackoverflow.com/a/15886154/158523 (?:https?\:\/\/)?(?:www\.)?(?:vimeo\.com\/)([0-9]+)
+const vmPattern = /^.*(?:https?:\/\/)?(?:www\.)?(?:vimeo\.com\/)([0-9]+).*/
+
 const youtubeUrlToId = ({url}) => {
   const parts = url.match(ytPattern)
   if (parts !== null && parts.length === 2) {
@@ -44,7 +47,17 @@ const youtubeUrlToId = ({url}) => {
   return null
 }
 
+const vimeoUrlToId = ({url}) => {
+  const parts = url.match(vmPattern)
+  if (parts !== null && parts.length === 2) {
+    return parts[1]
+  }
+  return null
+}
+
 const isYoutube = ({url}) => youtubeUrlToId({url}) !== null
 
+const isVimeo = ({url}) => vimeoUrlToId({url}) !== null
+
 export {urlForTemplateCss, urlForPost, urlForPostAttachment, urlForTemplateStylus, isExternalUrl, urlForStaticAsset,
-  urlForTemplateJs, urlForSitemap, urlForCollection, youtubeUrlToId, isYoutube}
+  urlForTemplateJs, urlForSitemap, urlForCollection, vimeoUrlToId, youtubeUrlToId, isYoutube, isVimeo}
