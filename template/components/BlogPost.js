@@ -19,12 +19,14 @@ const BlogPost = ({post, renderExcerpt}) => {
         <a href={postUrl}>{post.title}</a>
       </h1>
       {renderExcerpt &&
-        <div className="markdown-content blog-post__body blog-post__excerpt"
+        <div
+          className="markdown-content blog-post__body blog-post__excerpt"
           dangerouslySetInnerHTML={{__html: post.htmlExcerpt}}
         />
       }
       {!renderExcerpt &&
-        <div className="markdown-content blog-post__body blog-post__content"
+        <div
+          className="markdown-content blog-post__body blog-post__content"
           dangerouslySetInnerHTML={{__html: post.htmlContent}}
         />
       }
