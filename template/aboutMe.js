@@ -7,7 +7,8 @@ const template = () =>
   <MainContainer bigHeader fullWidth>
     <div className="card introduction-card main-container__items">
       <div className="introduction-card__about_container">
-        <img alt={authorName}
+        <img
+          alt={authorName}
           className="introduction-card__image round-img"
           src={urlForStaticAsset({id: 'static@/img/profile-2.jpg'})}
         />
