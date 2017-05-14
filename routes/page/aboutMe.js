@@ -15,6 +15,6 @@ const aboutMePageHandler = {
       headers: defaultHeadersFor({url: `${url}/index.html`})
     }
   },
-  handles: async () => ['/hakkimda']
+  handles: async () => ['/hakkimda/']
 }
 export {aboutMePageHandler}
