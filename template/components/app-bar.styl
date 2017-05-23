@@ -10,18 +10,22 @@
   z-index 1
   background-color transparent
   transition all 0.3s ease-in-out
-  color rgba(255, 255, 255, 0.8)
-  text-shadow 0 0 5px rgba(0,0,0,1), 0 0 1px rgba(0,0,0,1)
   shadow-0()
 
 .app-bar_opaque
+  background-color $background_primary
   shadow-1()
-  primary-block()
-  text-shadow 0 0 5px rgba(0,0,0,.2)
+  .app-bar__text
+    color $text_default_light
+    text-shadow 0 0 5px rgba(0,0,0,.2)
 
 .app-bar__spacer
   flex-grow 1
   flex-shrink 1
+
+.app-bar__text
+  color rgba(255, 255, 255, 0.8)
+  text-shadow 0 0 5px rgba(0,0,0,1), 0 0 1px rgba(0,0,0,1)
 
 .app-bar__title
   margin 0
@@ -54,3 +58,16 @@
     display none
     +gt-sm()
       display inline-block
+
+.app-bar__mobile-menu-container
+  +gt-sm()
+    display none
+
+.app-bar__mobile-button-icon
+  vertical-align middle
+
+.mdc-simple-menu .mdc-list-item
+  font-size $defaultFontSize
+  font-family $defaultFont
+  line-height $defaultLineHeight
+

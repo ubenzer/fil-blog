@@ -36,7 +36,10 @@ MainContainer.defaultProps = {
 
 MainContainer.propTypes = {
   bigHeader: PropTypes.bool,
-  children: PropTypes.arrayOf(PropTypes.element).isRequired,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.element),
+    PropTypes.element
+  ]).isRequired,
   fullWidth: PropTypes.bool
 }
 

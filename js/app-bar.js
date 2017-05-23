@@ -1,3 +1,5 @@
+import {MDCRipple} from '@material/ripple'
+import {MDCSimpleMenu} from '@material/menu'
 import offset from 'document-offset'
 
 const mainContentDOM = document.querySelector('.main-container')
@@ -29,4 +31,19 @@ const initAppBarOpacity = () => {
   window.addEventListener('scroll', checkAndMakeOpaque)
 }
 
-export {initAppBarOpacity}
+const initDropdown = () => {
+  const buttonEl = document.querySelector('.app-bar__mobile-button')
+  const menuEl = document.querySelector('.app-bar__mobile-menu')
+  MDCRipple.attachTo(buttonEl)
+
+  const menu = new MDCSimpleMenu(menuEl)
+  buttonEl.addEventListener('click', () => {
+    menu.open = !menu.open
+  })
+  menuEl.addEventListener('MDCSimpleMenu:selected', (evt) => {
+    const urlToGo = evt.detail.item.getAttribute('data-href')
+    window.location = urlToGo
+  })
+}
+
+export {initAppBarOpacity, initDropdown}
