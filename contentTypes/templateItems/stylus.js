@@ -7,16 +7,18 @@ import path from 'path'
 import stylus from 'stylus'
 
 const cleanCss = new CleanCSS({
-  inline: ['remote'],
+  inline: ['all'],
   level: {
+    1: {specialComments: 0},
     2: {
       all: false,
       removeDuplicateRules: true
     }
-  }
+  },
+  rebase: false,
+  returnPromise: true
 })
 const renderAsync = Promise.promisify(stylus.render)
-cleanCss.minifyAsync = Promise.promisify(cleanCss.minify)
 
 const styls = {
   content: async () => {
@@ -24,7 +26,8 @@ const styls = {
     const strContent = await fs.readFile(p, 'utf8')
 
     return renderAsync(strContent, {filename: p})
-      .then((css) => cleanCss.minifyAsync(css))
+      .then((css) => cleanCss.minify(css))
+      .catch((err) => ({styles: JSON.stringify(err)}))
       .then((output) => ({content: output.styles}))
   },
   contentWatcher$: () => chokidar$([`${cssPath}/**/*.styl`, `${templatePath}/**/*.styl`], {ignoreInitial: true})
