@@ -1,6 +1,5 @@
 import {chokidar$, chokidarAddRemoveFile$} from '../../utils/chokidar'
 import {idToPath, idToType, isPathImage, pathToIdPart} from '../../utils/id'
-import {postPath, postSymbol} from '../../../config'
 import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
@@ -11,7 +10,7 @@ export const post = {
     const p = idToPath({id})
 
     return globby(['**/*', '!index.md', '!**/.*'], {
-      cwd: path.join(postPath, p),
+      cwd: p,
       nodir: true
     })
     .then((files) =>
@@ -19,17 +18,17 @@ export const post = {
         const childPath = path.join(p, file)
         const childId = pathToIdPart({p: childPath})
 
-        return isPathImage({p: childPath}) ? `image@/${postSymbol}${childId}` : `file@/${postSymbol}${childId}`
+        return isPathImage({p: childPath}) ? `image@${childId}` : `file@${childId}`
       })
     )
   },
   childrenWatcher$: ({id}) =>
-    chokidarAddRemoveFile$(path.join(postPath, idToPath({id})), {
+    chokidarAddRemoveFile$(idToPath({id}), {
       ignoreInitial: true,
-      ignored: ['**/.*', path.join(postPath, idToPath({id}), 'index.md'), '**/']
+      ignored: ['**/.*', path.join(idToPath({id}), 'index.md'), '**/']
     }),
   content: async ({id, imageMetas, scaledImageIds}) => {
-    const rawFileContent = await fs.readFile(path.join(postPath, idToPath({id}), 'index.md'), 'utf8')
+    const rawFileContent = await fs.readFile(path.join(idToPath({id}), 'index.md'), 'utf8')
     const p = await rawContentToPostObject({id, imageMetas, rawFileContent, scaledImageIds})
     return {id, ...p}
   },
@@ -46,6 +45,6 @@ export const post = {
     ))
     return {id, imageMetas, scaledImageIds}
   },
-  contentWatcher$: ({id}) => chokidar$(path.join(postPath, idToPath({id}), 'index.md'), {ignoreInitial: true})
+  contentWatcher$: ({id}) => chokidar$(path.join(idToPath({id}), 'index.md'), {ignoreInitial: true})
 }
 

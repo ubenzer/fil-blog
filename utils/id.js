@@ -1,4 +1,4 @@
-import {page, postSymbol, staticAssetPath} from '../../config'
+import {page, postPath, staticAssetPath} from '../../config'
 import {IMAGE_EXTENSIONS} from './image'
 import path from 'path'
 import replace from 'replaceall'
@@ -54,10 +54,10 @@ const isGeneratedImagePath = ({p}) => {
 }
 
 const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
-  const postPath = idToPath({id: postId})
+  const pstPath = idToPath({id: postId})
   const relPath = urlToPath({url: relativeUrl})
-  const absPath = path.join(postPath, relPath)
-  return `${type}@/${postSymbol}${pathToIdPart({p: absPath})}`
+  const absPath = path.join(pstPath, relPath)
+  return `${type}@${pathToIdPart({p: absPath})}`
 }
 
 const postIdToImageId = ({postId, imageRelativeUrl}) =>
@@ -66,7 +66,7 @@ const postIdToImageId = ({postId, imageRelativeUrl}) =>
 const postIdToAttachmentId = ({postId, attachmentRelativeUrl}) =>
   postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl, type: 'file'})
 
-const idForPostAttachment = ({url, type}) => `${type}@/${postSymbol}${url}`
+const idForPostAttachment = ({url, type}) => `${type}@${postPath}${url}`
 
 const idForTemplateCss = ({url}) => `file@${url}`
 

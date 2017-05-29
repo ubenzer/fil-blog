@@ -1,9 +1,13 @@
 import {isExternalUrl, urlForPost, urlForPostAttachment} from '../utils/url'
 import {postIdToAttachmentId} from '../utils/id'
+import {postPath} from '../../config'
 
 const POST_LINK_PREFIX = 'post@'
 
-const postUrlGenerator = ({rawUrl}) => urlForPost({id: rawUrl})
+const postUrlGenerator = ({rawUrl}) => {
+  const normalizedUrl = `${POST_LINK_PREFIX}${postPath}${rawUrl.substr(POST_LINK_PREFIX.length)}`
+  return urlForPost({id: normalizedUrl})
+}
 const postAttachmentUrlGenerator = ({rawUrl, postId}) => {
   const attachmentId = postIdToAttachmentId({attachmentRelativeUrl: rawUrl, postId})
   return urlForPostAttachment({id: attachmentId})

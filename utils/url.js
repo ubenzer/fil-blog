@@ -1,4 +1,4 @@
-import {page, postSymbol} from '../../config'
+import {page, postPath} from '../../config'
 import {idToPath} from './id'
 import path from 'path'
 import replaceall from 'replaceall'
@@ -17,13 +17,13 @@ const urlForTemplateStylus = () => '/ui.css'
 const urlForTemplateJs = () => '/app.js'
 
 const urlForPost = ({id}) => {
-  const p = idToPath({id})
+  const p = idToPath({id}).substr(postPath.length)
   return `${slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})}/`
 }
 
 const urlForPostAttachment = ({id}) => {
-  // we get rid of post part of id (--->/post<---/2010/05/finaller/finaller-500.scaled.webp)
-  const p = idToPath({id}).substr(postSymbol.length + 1)
+  // we get rid of post part of id (--->/contents/post<---/2010/05/finaller/finaller-500.scaled.webp)
+  const p = idToPath({id}).substr(postPath.length)
   return slug(replaceall(path.sep, '/', p), {save: ['/', '.', '-', '_']})
 }
 
