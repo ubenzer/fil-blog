@@ -25,7 +25,7 @@ const template = ({post, url}) =>
       url={url}
     />
     <BlogPost post={post} />
-    <Comments id={post.id} url={url} />
+    <Comments url={url} />
   </MainContainer>
 
 

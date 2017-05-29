@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import React from 'react'
 import {baseUrl} from '../../../config'
 
-const Comments = ({id, url}) =>
+const Comments = ({url}) =>
   <div className="card comments main-container__items">
     <div className="card__contents" id="disqus_thread" />
     <Helmet script={[
@@ -11,7 +11,6 @@ const Comments = ({id, url}) =>
         innerHTML: `
         var disqus_config = function () {
           this.page.url = "${baseUrl}${url}";
-          this.page.identifier = "${id}";
         };
         (function() {
           var d = document, s = d.createElement('script');
@@ -26,9 +25,6 @@ const Comments = ({id, url}) =>
     />
   </div>
 
-Comments.propTypes = {
-  id: PropTypes.string.isRequired,
-  url: PropTypes.string.isRequired
-}
+Comments.propTypes = {url: PropTypes.string.isRequired}
 
 export {Comments}
