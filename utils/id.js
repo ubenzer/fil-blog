@@ -54,7 +54,7 @@ const isGeneratedImagePath = ({p}) => {
 }
 
 const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
-  const pstPath = idToPath({id: postId})
+  const pstPath = path.join(idToPath({id: postId}), '..')
   const relPath = urlToPath({url: relativeUrl})
   const absPath = path.join(pstPath, relPath)
   return `${type}@${pathToIdPart({p: absPath})}`

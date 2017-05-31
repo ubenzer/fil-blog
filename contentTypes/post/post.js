@@ -7,7 +7,8 @@ import {rawContentToPostObject} from '../../utils/post'
 
 export const post = {
   children: async ({id}) => {
-    const p = idToPath({id})
+    // Get rid of index.md part.
+    const p = path.join(idToPath({id}), '..')
 
     return globby(['**/*', '!index.md', '!**/.*'], {
       cwd: p,
@@ -28,7 +29,7 @@ export const post = {
       ignored: ['**/.*', path.join(idToPath({id}), 'index.md'), '**/']
     }),
   content: async ({id, imageMetas, scaledImageIds}) => {
-    const rawFileContent = await fs.readFile(path.join(idToPath({id}), 'index.md'), 'utf8')
+    const rawFileContent = await fs.readFile(idToPath({id}), 'utf8')
     const p = await rawContentToPostObject({id, imageMetas, rawFileContent, scaledImageIds})
     return {id, ...p}
   },
@@ -45,6 +46,6 @@ export const post = {
     ))
     return {id, imageMetas, scaledImageIds}
   },
-  contentWatcher$: ({id}) => chokidar$(path.join(idToPath({id}), 'index.md'), {ignoreInitial: true})
+  contentWatcher$: ({id}) => chokidar$(idToPath({id}), {ignoreInitial: true})
 }
 

@@ -17,7 +17,7 @@ const urlForTemplateStylus = () => '/ui.css'
 const urlForTemplateJs = () => '/app.js'
 
 const urlForPost = ({id}) => {
-  const p = idToPath({id}).substr(postPath.length)
+  const p = idToPath({id}).substr(postPath.length).slice(0, -1 * '/index.md'.length)
   return `${slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})}/`
 }
 
