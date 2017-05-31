@@ -1,4 +1,5 @@
 import {cachePath, deployConfig, outPath, templatePath} from '../config'
+import {aboutMePageHandler} from './routes/page/aboutMe'
 import {binaryPassthroughHandler} from './routes/postAttachmentPassthroughHandler'
 import {chokidar$} from './utils/chokidar'
 import {file} from './contentTypes/binary/file'
@@ -15,8 +16,8 @@ import {sitemapHandler} from './routes/sitemapHandler'
 import {staticAssetHandler} from './routes/staticAssetHandler'
 import {staticAssetsCollection} from './contentTypes/staticAssetsCollection'
 import {stylus} from './contentTypes/templateItems/stylus'
-import {templateJsHandler} from './routes/templateJsHandler'
-import {templateStylusHandler} from './routes/templateStylusHandler'
+import {templateJsHandler} from './routes/template/jsHandler'
+import {templateStylusHandler} from './routes/template/stylusHandler'
 
 // noinspection JSUnusedGlobalSymbols
 const project = {
@@ -38,6 +39,7 @@ const project = {
   deployConfig: () => deployConfig,
   outPath: () => outPath,
   routeHandlers: () => ({
+    aboutMePageHandler,
     binaryPassthroughHandler,
     recentPostsCollectionHandler,
     singlePostHandler,

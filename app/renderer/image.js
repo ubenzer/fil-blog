@@ -2,7 +2,7 @@ import {
   fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
   urlToPath
 } from '../utils/id'
-import {isExternalUrl, isYoutube, urlForPostAttachment, youtubeUrlToId} from '../utils/url'
+import {isExternalUrl, isVimeo, isYoutube, urlForPostAttachment, vimeoUrlToId, youtubeUrlToId} from '../utils/url'
 import mime from 'mime-types'
 import path from 'path'
 
@@ -135,13 +135,26 @@ const renderAsImgWithSrcset = ({availableSizes, caption, classes, imageMeta, ren
 }
 
 const renderAsYoutube = ({classes, url}) => {
-  const youtubeVideoId = youtubeUrlToId({url})
+  const videoId = youtubeUrlToId({url})
   const allClasses = ['youtube', 'video', ...classes]
 
   return (
     `<div class="${allClasses.join(' ')}">
-       <iframe type="text/html" data-src="https://www.youtube.com/embed/${youtubeVideoId}?modestbranding=1&amp;\
-showinfo=0&amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen" class="lazyload"></iframe>
+       <iframe type="text/html" data-src="https://www.youtube.com/embed/${videoId}?modestbranding=1&amp;\
+showinfo=0&amp;rel=0" frameborder="0" allowfullscreen class="lazyload"></iframe>
+     </div>
+    `
+  )
+}
+
+const renderAsVimeo = ({classes, url}) => {
+  const videoId = vimeoUrlToId({url})
+  const allClasses = ['vimeo', 'video', ...classes]
+
+  return (
+    `<div class="${allClasses.join(' ')}">
+      <iframe data-src="https://player.vimeo.com/video/${videoId}?title=0&byline=0&portrait=0" frameborder="0" 
+      allowfullscreen frameborder="0" class="lazyload"></iframe>
      </div>
     `
   )
@@ -150,6 +163,8 @@ showinfo=0&amp;rel=0" frameborder="0" allowfullscreen="allowfullscreen" class="l
 const renderAsImg = ({caption, classes, renderAsLink, url}) => {
   if (isYoutube({url})) {
     return renderAsYoutube({classes, url})
+  } else if (isVimeo({url})) {
+    return renderAsVimeo({classes, url})
   }
   const normalizedClasses = ['img', ...classes]
   const img = simpleImgTag({caption, classes: normalizedClasses, src: url})

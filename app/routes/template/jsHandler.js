@@ -1,5 +1,5 @@
-import {defaultHeadersFor} from '../utils/http'
-import {urlForTemplateJs} from '../utils/url'
+import {defaultHeadersFor} from '../../utils/http'
+import {urlForTemplateJs} from '../../utils/url'
 
 const templateJsHandler = {
   async handle({project, url}) {

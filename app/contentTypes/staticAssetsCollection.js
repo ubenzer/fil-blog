@@ -1,4 +1,4 @@
-import {chokidarChangeFile$} from '../utils/chokidar'
+import {chokidarAddRemoveFile$} from '../utils/chokidar'
 import globby from 'globby'
 import {pathToIdPart} from '../utils/id'
 import {staticAssetPath} from '../../config'
@@ -15,6 +15,6 @@ export const staticAssetsCollection = {
         return `file@/${childId}`
       })
     ),
-  childrenWatcher$: () => chokidarChangeFile$(`${staticAssetPath}/**/*`, {ignoreInitial: true}),
+  childrenWatcher$: () => chokidarAddRemoveFile$(`${staticAssetPath}/**/*`, {ignoreInitial: true}),
   content: async () => ({})
 }
