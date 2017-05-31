@@ -5,26 +5,19 @@ import path from 'path'
 // These defines root paths
 export const contentPath = path.join('.')
 
-// These are used to build folders for specific contents
-// These are also used as a part of ID of contents, so be careful while changing them
-export const postSymbol = path.join('contents', 'post')
-export const templateSymbol = path.join('site', 'template')
-const staticAssetSymbol = path.join('site', 'static')
-const jsSymbol = path.join('site', 'js')
-
-// These defines paths for each content type
-export const postPath = path.join(contentPath, postSymbol)
+// These defines the lookup paths for each content type
+export const postPath = path.join(contentPath, 'contents', 'post')
 export const cssPath = path.join(contentPath, 'site', 'css')
-export const templatePath = path.join(contentPath, templateSymbol)
-export const staticAssetPath = path.join(contentPath, staticAssetSymbol)
-export const jsPath = path.join(contentPath, jsSymbol)
+export const templatePath = path.join(contentPath, 'site', 'template')
+export const staticAssetPath = path.join(contentPath, 'site', 'static')
+export const jsPath = path.join(contentPath, 'site', 'js')
 
 // These defines caching and output related paths
 export const cachePath = './cache'
 export const outPath = './dist'
 
 // This is used by fil-deploy-github-pages
-export const remoteRepoUrl = 'git@github.com:ubenzer/ubenzer.github.io.git'
+export const deployConfig = {remoteRepoUrl: 'git@github.com:ubenzer/ubenzer.github.io.git'}
 
 // Template config
 export const defaultTitle = 'Default Fil Blog'
@@ -36,6 +29,7 @@ export const locale = 'tr'
 export const ogLocale = 'tr_TR'
 export const fbAppId = '106731154350'
 export const postsPerPage = 5
+export const aboutMe = 'Hakkımda'
 
 // Template strings
 export const readPost = 'Devamını oku'
@@ -50,3 +44,5 @@ export const generatedAt2 = 'tarihinde'
 export const fil = 'Fil'
 export const filUrl = 'https://github.com/ubenzer/fil'
 export const generatedAt3 = 'ile yaratılmıştır.'
+export const authorName = 'Umut Benzer'
+export const authorMiniBio = 'Software Engineer, MSc. in Berlin'
