@@ -33,7 +33,8 @@
     top 0
     transition opacity 400ms
 
-  .youtube
+  .youtube,
+  .vimeo
     position relative
     padding-bottom 56.25%
     padding-top 0
@@ -51,12 +52,8 @@
   margin-bottom 10px
 
 .blog-post__title
-  &, &:visited {
-    font-weight 400
-    color $text_primary
-    text-decoration none
-    font-size 32px
-    line-height 32px
-    margin 0 0 24px
-  }
-
+  margin 0
+  a
+    &, &:visited
+      color $text_primary
+      text-decoration none

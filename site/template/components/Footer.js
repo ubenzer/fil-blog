@@ -24,7 +24,8 @@ const Footer = () =>
       <span>{generatedAt1}&nbsp;</span>
       <span>{moment().locale(locale).format(dateFormat)}</span>
       <span>&nbsp;{generatedAt2}&nbsp;</span>
-      <a href={filUrl}
+      <a
+        href={filUrl}
         target="_blank" // eslint-disable-line react/jsx-no-target-blank
       >{fil}</a>
       <span>&nbsp;{generatedAt3}</span>

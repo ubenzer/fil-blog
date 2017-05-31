@@ -14,7 +14,8 @@ const template = ({currentPage, posts, totalPages}) =>
     <div>
       {
         posts.map((post) =>
-          <BlogPost key={post.id}
+          <BlogPost
+            key={post.id}
             post={post}
             renderExcerpt
           />

@@ -1,21 +1,24 @@
 .main-container
   width: 100%
-  max-width 1000px
+  max-width 100rem
   display flex
   justify-content center
   align-self center
   margin 0 auto
 
-.main-content
+.main-container__main-content
   flex-grow 1
-  max-width 740px
+  max-width 74rem
+
+.main-container__main-content--full
+  max-width none
 
 .main-container__items
-  margin 5px
+  margin $sizeS
   +gt-sm()
-    margin 20px
+    margin $sizeXL
 
-.main-content__sidebar
+.main-container__sidebar
   width 25%
   flex-grow 0
   flex-shrink 0
