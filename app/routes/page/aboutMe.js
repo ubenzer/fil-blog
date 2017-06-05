@@ -7,7 +7,7 @@ import {templatePath} from '../../../config'
 
 const aboutMePageHandler = {
   async handle({project, url}) {
-    const post = await project.valueOf({id: 'post@contents/page/hakkimda.md'})
+    const post = await project.valueOf({id: 'post@contents/page/about-me.md'})
 
     const Template = requireUncached(path.join(process.cwd(), templatePath, 'aboutMe')).default
     const str = render({jsx: <Template bodyText={post.htmlContent} url={url} />})
