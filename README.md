@@ -1,12 +1,12 @@
 # Fil & Fil-Blog
 
-This is a demo blog which uses Fil, content engine.
+This is a demo blog which uses [Fil](https://github.com/ubenzer/fil), content engine.
 
 Fil is a static page generator, unopinionated content management system which is designed to make developing websites
 with different data structures easily to build and maintain for technical persons as well as making editing content
 pleasurable to the copywriters.
 
-[]To learn more about Fil, go to its repository by clicking here.](https://fil.ubenzer.com/)
+[To learn more about Fil, go to its repository by clicking here.](https://github.com/ubenzer/fil)
 
 # [Demo](https://fil.ubenzer.com/)
 
