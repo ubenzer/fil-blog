@@ -1,9 +1,24 @@
+# Fil & Fil-Blog
+
+This is a demo blog which uses Fil, content engine.
+
+Fil is a static page generator, unopinionated content management system which is designed to make developing websites
+with different data structures easily to build and maintain for technical persons as well as making editing content
+pleasurable to the copywriters.
+
+[]To learn more about Fil, go to its repository by clicking here.](https://fil.ubenzer.com/)
+
+# [Demo](https://fil.ubenzer.com/)
+
+[Click here](https://fil.ubenzer.com/) to see how this demo blog looks like when published!
+
 # How to start your own blog in 5 minute
 1. Clone this repository
-2. npm i
-3. Edit your config
-4. npm start
-5. npm run publish
+2. `npm i`
+3. Edit your config and content where necessary
+4. Use `npm start` to live-edit your changes
+5. Use `npm run generate` to generate static pages that can be hosted anywhere OR use `npm run publish` to 
+generate static files and publish them to configured Github Pages.
 
 # (Optionally) Getting updates
 If you want, you can get updates to either application logic part of

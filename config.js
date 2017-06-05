@@ -17,7 +17,7 @@ export const cachePath = './cache'
 export const outPath = './dist'
 
 // This is used by fil-deploy-github-pages
-export const deployConfig = {remoteRepoUrl: 'git@github.com:ubenzer/ubenzer.github.io.git'}
+export const deployConfig = {remoteRepoUrl: 'git@github.com:ubenzer/fil-blog-demo.git'}
 
 // Template config
 export const defaultTitle = 'Default Fil Blog'
