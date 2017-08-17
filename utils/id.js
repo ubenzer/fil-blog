@@ -4,7 +4,7 @@ import path from 'path'
 import replace from 'replaceall'
 import {urlForPost} from './url'
 
-const scaledImagePostfix = '.scaled'
+const scaledImagePostfix = '.scaled-'
 
 const fromGeneratedImagePath = ({p}) => {
   const fileExtension = path.extname(p)
@@ -14,21 +14,19 @@ const fromGeneratedImagePath = ({p}) => {
   if (fileNamePieces.length < 2) { return null }
 
   const afterScaledImagePostFix = fileNamePieces.pop()
-  const [, ext, dimensionStr] = afterScaledImagePostFix.split('-')
-  const dimension = parseInt(dimensionStr, 10)
+  const dimension = parseInt(afterScaledImagePostFix, 10)
 
-  const originalPath = path.join(p, '..', `${fileNamePieces.join(scaledImagePostfix)}.${ext}`)
+  const originalPath = path.join(p, '..', `${fileNamePieces.join(scaledImagePostfix)}${fileExtension}`)
 
-  return {dimension, ext, originalPath}
+  return {dimension, ext: fileExtension.substr(1), originalPath}
 }
 
-const toGeneratedImagePath = ({originalPath, dimension, ext}) => {
+const toGeneratedImagePath = ({originalPath, dimension}) => {
   const fileExtension = path.extname(originalPath)
   const fileName = path.basename(originalPath, fileExtension)
-  const normalizedExtension = ext ? `.${ext}` : fileExtension
 
-  // / a/b/c.jpg becomes a/b/c.scaled-jpg-500.webp
-  const outFileName = `${fileName}${scaledImagePostfix}-${fileExtension.substr(1)}-${dimension}${normalizedExtension}`
+  // / a/b/c.jpg becomes a/b/c.scaled-500.jpg
+  const outFileName = `${fileName}${scaledImagePostfix}${dimension}${fileExtension}`
 
   return path.join(originalPath, '..', outFileName)
 }

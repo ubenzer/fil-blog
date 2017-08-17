@@ -9,7 +9,6 @@ import {js} from './contentTypes/templateItems/js'
 import {post} from './contentTypes/post/post'
 import {postCollection} from './contentTypes/post/postCollection'
 import {recentPostsCollectionHandler} from './routes/recentPostsCollectionHandler'
-import {scaledImage} from './contentTypes/binary/scaledImage'
 import {singlePostHandler} from './routes/singlePostHandler'
 import {sitemap} from './contentTypes/sitemap'
 import {sitemapHandler} from './routes/sitemapHandler'
@@ -18,6 +17,7 @@ import {staticAssetsCollection} from './contentTypes/staticAssetsCollection'
 import {stylus} from './contentTypes/templateItems/stylus'
 import {templateJsHandler} from './routes/template/jsHandler'
 import {templateStylusHandler} from './routes/template/stylusHandler'
+import {postImageHandler} from './routes/postImageHandler'
 
 // noinspection JSUnusedGlobalSymbols
 const project = {
@@ -25,10 +25,10 @@ const project = {
   contentTypes: () => ({
     file,
     image,
+    imageMeta: image,
     js,
     post,
     postCollection,
-    scaledImage,
     sitemap,
     staticAssetsCollection,
     stylus
@@ -41,6 +41,7 @@ const project = {
   routeHandlers: () => ({
     aboutMePageHandler,
     binaryPassthroughHandler,
+    postImageHandler,
     recentPostsCollectionHandler,
     singlePostHandler,
     sitemapHandler,

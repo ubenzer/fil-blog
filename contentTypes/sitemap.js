@@ -24,11 +24,7 @@ const generateSitemap = ({posts}) => {
 }
 
 const sitemp = {
-  content: async ({posts}) => {
-    const map = generateSitemap({posts})
-    return {content: map}
-  },
-  contentArguments: async ({project}) => {
+  content: async ({project}) => {
     const {children: postIds} = await project.metaOf({id: 'postCollection'})
     const posts = await Promise.all(
       postIds.map((p) => Promise.all([
@@ -46,7 +42,8 @@ const sitemp = {
       }))
     ))
 
-    return {posts}
+    const map = generateSitemap({posts})
+    return {content: map}
   }
 }
 

@@ -28,23 +28,21 @@ export const post = {
       ignoreInitial: true,
       ignored: ['**/.*', path.join(idToPath({id}), 'index.md'), '**/']
     }),
-  content: async ({id, imageMetas, scaledImageIds}) => {
-    const rawFileContent = await fs.readFile(idToPath({id}), 'utf8')
-    const p = await rawContentToPostObject({id, imageMetas, rawFileContent, scaledImageIds})
-    return {id, ...p}
-  },
-  contentArguments: async ({id, project}) => {
+  content: async ({id, project}) => {
     const postAttachments = (await project.metaOf({id})).children
-    const imageIds = postAttachments.filter((c) => idToType({id: c}) === 'image')
+    const imageMetaIds = postAttachments
+      .filter((c) => idToType({id: c}) === 'image')
+      .map((c) => `imageMeta@${idToPath({id: c})}`)
 
-    const scaledImageIds = (await Promise.all(imageIds.map((imageId) =>
-      project.metaOf({id: imageId}).then((meta) => meta.children))))
-      .reduce((acc, scaledImagesArray) => [...acc, ...scaledImagesArray], [])
+    const imageMetas = await Promise.all(
+      imageMetaIds.map(
+        (imageMetaId) => project.valueOf({id: imageMetaId})
+      )
+    )
 
-    const imageMetas = await Promise.all(imageIds.map((imageId) =>
-        project.valueOf({id: imageId}).then((content) => ({id: imageId, meta: content.meta}))
-    ))
-    return {id, imageMetas, scaledImageIds}
+    const rawFileContent = await fs.readFile(idToPath({id}), 'utf8')
+    const p = await rawContentToPostObject({id, imageMetas, rawFileContent})
+    return {id, ...p}
   },
   contentWatcher$: ({id}) => chokidar$(idToPath({id}), {ignoreInitial: true})
 }
