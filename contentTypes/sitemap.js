@@ -30,17 +30,15 @@ const sitemp = {
       postIds.map((p) => Promise.all([
         project.valueOf({id: p}),
         project.metaOf({id: p})
-      ])
-      .then(([postContent, postMeta]) => {
+      ]).then(([postContent, postMeta]) => {
         const postImageIds = postMeta.children.filter((c) => idToType({id: c}) === 'image')
         return {postContent, postImageIds}
-      })
-      .then(({postContent, postImageIds}) => ({
+      }).then(({postContent, postImageIds}) => ({
         editDate: postContent.editDate,
         id: p,
         postImageIds
       }))
-    ))
+      ))
 
     const map = generateSitemap({posts})
     return {content: map}

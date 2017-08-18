@@ -12,12 +12,9 @@ const staticAssetHandler = {
       headers: defaultHeadersFor({url})
     }
   },
-  async handles({staticAssets}) {
-    return staticAssets.map((id) => urlForStaticAsset({id}))
-  },
-  async handlesArguments({project}) {
+  async handles({project}) {
     const {children: staticAssets} = await project.metaOf({id: 'staticAssetsCollection'})
-    return {staticAssets}
+    return staticAssets.map((id) => urlForStaticAsset({id}))
   }
 }
 export {staticAssetHandler}

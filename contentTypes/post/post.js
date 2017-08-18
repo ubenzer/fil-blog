@@ -13,8 +13,7 @@ export const post = {
     return globby(['**/*', '!index.md', '!**/.*'], {
       cwd: p,
       nodir: true
-    })
-    .then((files) =>
+    }).then((files) =>
       files.map((file) => {
         const childPath = path.join(p, file)
         const childId = pathToIdPart({p: childPath})

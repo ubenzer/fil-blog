@@ -21,12 +21,9 @@ const singlePostHandler = {
       headers: defaultHeadersFor({url: `${url}/index.html`})
     }
   },
-  async handles({posts}) {
-    return posts.map((p) => urlForPost({id: p}))
-  },
-  async handlesArguments({project}) {
+  async handles({project}) {
     const posts = await project.metaOf({id: 'postCollection'})
-    return {posts: posts.children}
+    return posts.children.map((p) => urlForPost({id: p}))
   }
 }
 export {singlePostHandler}

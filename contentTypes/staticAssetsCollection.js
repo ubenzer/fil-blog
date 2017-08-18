@@ -8,8 +8,7 @@ export const staticAssetsCollection = {
     globby(['**/*'], {
       cwd: staticAssetPath,
       nodir: true
-    })
-    .then((files) =>
+    }).then((files) =>
       files.map((file) => {
         const childId = pathToIdPart({p: file})
         return `file@/${childId}`

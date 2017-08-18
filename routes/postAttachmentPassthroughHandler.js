@@ -12,16 +12,13 @@ const binaryPassthroughHandler = {
       headers: defaultHeadersFor({url})
     }
   },
-  async handles({nonImageAttachments}) {
-    return nonImageAttachments.map((id) => urlForPostAttachment({id}))
-  },
-  async handlesArguments({project}) {
+  async handles({project}) {
     const posts = await project.metaOf({id: 'postCollection'})
     const arrayOfChildMeta = await Promise.all(posts.children.map((post) => project.metaOf({id: post})))
     const postAttachments = arrayOfChildMeta.reduce((acc, meta) => [...acc, ...meta.children], [])
 
     const nonImageAttachments = postAttachments.filter((pci) => idToType({id: pci}) !== 'image')
-    return {nonImageAttachments}
+    return nonImageAttachments.map((id) => urlForPostAttachment({id}))
   }
 }
 export {binaryPassthroughHandler}

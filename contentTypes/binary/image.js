@@ -6,8 +6,6 @@ import path from 'path'
 
 const widths = [50, 200, 500, 1000, 1500, 2000]
 
-const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
-
 const getScaledImageList = ({baseImageMeta}) => {
   const {width, format} = baseImageMeta
 
@@ -27,8 +25,7 @@ const getScaledImages = async ({scaledImageList, src}) => {
         format: f,
         src,
         width: w
-      })
-      .then((buffer) => ({
+      }).then((buffer) => ({
         content: buffer,
         format: f,
         width: w
@@ -68,7 +65,7 @@ export const image = {
       scaled
     }
   },
-  contentWatcher$: watcher$
+  contentWatcher$: ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 }
 
 

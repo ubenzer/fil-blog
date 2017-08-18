@@ -41,14 +41,11 @@ const recentPostsCollectionHandler = {
       headers: defaultHeadersFor({url: `${url}/index.html`})
     }
   },
-  async handles({posts}) {
-    const paginatedPostCollection = calculatePagination({array: posts, chunkSize})
+  async handles({project}) {
+    const posts = await project.metaOf({id: 'postCollection'})
+    const paginatedPostCollection = calculatePagination({array: posts.children, chunkSize})
 
     return paginatedPostCollection.map((xyz, index) => urlForCollection({page: index}))
-  },
-  async handlesArguments({project}) {
-    const posts = await project.metaOf({id: 'postCollection'})
-    return {posts: posts.children}
   }
 }
 export {recentPostsCollectionHandler}
