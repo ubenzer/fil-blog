@@ -25,12 +25,12 @@ const js = {
           presets: [['es2015', {modules: false}]]
         })
       ]
-    }).then((bundle) => {
-      const generated = bundle.generate({format: 'iife'})
-
-      const code = generated.code
-      return {content: code}
     })
+      .then((bundle) => bundle.generate({format: 'iife'}))
+      .then((generated) => {
+        const code = generated.code
+        return {content: code}
+      })
   },
   contentWatcher$: () => chokidar$(`${jsPath}/**/*.js`, {ignoreInitial: true})
 }
