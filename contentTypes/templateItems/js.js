@@ -1,5 +1,5 @@
 import babel from 'rollup-plugin-babel'
-import {chokidar$} from '../../utils/chokidar'
+import {chokidar} from '../../utils/chokidar'
 import commonjs from 'rollup-plugin-commonjs'
 import {jsPath} from '../../../config'
 import nodeResolve from 'rollup-plugin-node-resolve'
@@ -32,7 +32,7 @@ const js = {
         return {content: code}
       })
   },
-  contentWatcher$: () => chokidar$(`${jsPath}/**/*.js`, {ignoreInitial: true})
+  contentWatcher$: () => chokidar(`${jsPath}/**/*.js`, {ignoreInitial: true})
 }
 
 export {js}

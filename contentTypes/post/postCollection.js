@@ -1,4 +1,4 @@
-import {chokidarAddRemoveFile$} from '../../utils/chokidar'
+import {chokidarAddRemoveFile} from '../../utils/chokidar'
 import {getFoldersIn} from '../../utils/fs'
 import path from 'path'
 import {postPath} from '../../../config'
@@ -20,10 +20,12 @@ export const postCollection = {
       )
     )).reduce((acc, postArray) => [...acc, ...postArray], [])
 
-    return posts.map(({year, month, postId}) => `post@${postPath}/${year}/${month}/${postId}/index.md`)
+    return posts.map(
+      ({year, month, postId}) => ({id: `${postPath}/${year}/${month}/${postId}/index.md`, type: 'post'})
+    )
   },
   childrenWatcher$: () =>
-    chokidarAddRemoveFile$(`${postPath}/**/index.md`, {
+    chokidarAddRemoveFile(`${postPath}/**/index.md`, {
       depth: 3,
       ignoreInitial: true
     }),

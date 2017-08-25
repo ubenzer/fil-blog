@@ -31,11 +31,9 @@ const toGeneratedImagePath = ({originalPath, dimension}) => {
   return path.join(originalPath, '..', outFileName)
 }
 
-const idToType = ({id}) => id.split('@')[0]
+const idToPath = ({id}) => replace('/', path.sep, id)
 
-const idToPath = ({id}) => replace('/', path.sep, id.substr(id.indexOf('@') + 1))
-
-const pathToIdPart = ({p}) => replace(path.sep, '/', p)
+const pathToId = ({p}) => replace(path.sep, '/', p)
 
 const urlToPath = ({url}) => replace('/', path.sep, url)
 
@@ -51,28 +49,26 @@ const isGeneratedImagePath = ({p}) => {
   }
 }
 
-const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
+const postRelativeIdConversion = ({postId, relativeUrl}) => {
   const pstPath = path.join(idToPath({id: postId}), '..')
   const relPath = urlToPath({url: relativeUrl})
   const absPath = path.join(pstPath, relPath)
-  return `${type}@${pathToIdPart({p: absPath})}`
+  return `${pathToId({p: absPath})}`
 }
 
 const postIdToImageId = ({postId, imageRelativeUrl}) =>
-  postRelativeIdConversion({postId, relativeUrl: imageRelativeUrl, type: 'image'})
+  postRelativeIdConversion({postId, relativeUrl: imageRelativeUrl})
 
 const postIdToAttachmentId = ({postId, attachmentRelativeUrl}) =>
-  postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl, type: 'file'})
+  postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl})
 
-const idForPostAttachment = ({url, type}) => `${type}@${postPath}${url}`
+const idForPostAttachment = ({url}) => `${postPath}${url}`
 
-const idForTemplateCss = ({url}) => `file@${url}`
-
-const idForStaticAsset = ({url}) => `file@${staticAssetPath}${url}`
+const idForStaticAsset = ({url}) => `${staticAssetPath}${url}`
 
 const idForPost = ({postIds, url}) =>
   postIds
-    .map((c) => ({id: c, url: urlForPost({id: c})}))
+    .map(({id: c}) => ({id: c, url: urlForPost({id: c})}))
     .filter((c) => c.url === url)[0].id
 
 const idForCollection = ({url}) => {
@@ -81,6 +77,6 @@ const idForCollection = ({url}) => {
   return {page: Number(pageNumberStr) - 1}
 }
 
-export {idToType, idToPath, pathToIdPart, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
+export {idToPath, pathToId, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
   fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, postIdToAttachmentId,
-  idForTemplateCss, idForStaticAsset, idForCollection}
+  idForStaticAsset, idForCollection}

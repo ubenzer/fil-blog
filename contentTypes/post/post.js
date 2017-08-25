@@ -1,5 +1,5 @@
-import {chokidar$, chokidarAddRemoveFile$} from '../../utils/chokidar'
-import {idToPath, idToType, isPathImage, pathToIdPart} from '../../utils/id'
+import {chokidar, chokidarAddRemoveFile} from '../../utils/chokidar'
+import {idToPath, isPathImage, pathToId} from '../../utils/id'
 import fs from 'fs-extra'
 import globby from 'globby'
 import path from 'path'
@@ -16,26 +16,27 @@ export const post = {
     }).then((files) =>
       files.map((file) => {
         const childPath = path.join(p, file)
-        const childId = pathToIdPart({p: childPath})
+        const childId = pathToId({p: childPath})
 
-        return isPathImage({p: childPath}) ? `image@${childId}` : `file@${childId}`
+        return {
+          id: childId,
+          type: isPathImage({p: childPath}) ? 'image' : 'file'
+        }
       })
     )
   },
   childrenWatcher$: ({id}) =>
-    chokidarAddRemoveFile$(idToPath({id}), {
+    chokidarAddRemoveFile(idToPath({id}), {
       ignoreInitial: true,
       ignored: ['**/.*', path.join(idToPath({id}), 'index.md'), '**/']
     }),
   content: async ({id, project}) => {
-    const postAttachments = (await project.metaOf({id})).children
-    const imageMetaIds = postAttachments
-      .filter((c) => idToType({id: c}) === 'image')
-      .map((c) => `imageMeta@${idToPath({id: c})}`)
+    const postAttachments = (await project.metaOf({id, type: 'post'})).children
+    const imageMetaIds = postAttachments.filter(({type}) => type === 'image')
 
     const imageMetas = await Promise.all(
       imageMetaIds.map(
-        (imageMetaId) => project.valueOf({id: imageMetaId})
+        ({id: i, type}) => project.valueOf({id: i, type: 'imageMeta'})
       )
     )
 
@@ -43,6 +44,6 @@ export const post = {
     const p = await rawContentToPostObject({id, imageMetas, rawFileContent})
     return {id, ...p}
   },
-  contentWatcher$: ({id}) => chokidar$(idToPath({id}), {ignoreInitial: true})
+  contentWatcher: ({id, notifyFn}) => chokidar(notifyFn, idToPath({id}), {ignoreInitial: true})
 }
 

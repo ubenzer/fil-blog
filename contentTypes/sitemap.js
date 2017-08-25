@@ -1,6 +1,5 @@
 import {urlForPost, urlForPostAttachment} from '../utils/url'
 import {baseUrl} from '../../config'
-import {idToType} from '../utils/id'
 import moment from 'moment/moment'
 import sitemap from 'sitemap'
 
@@ -8,7 +7,7 @@ const generateSitemap = ({posts}) => {
   const twoWeeksAgo = moment().subtract(15, 'days')
   const urls = posts.map((post) => {
     const isContentOld = moment(post.editDate).isBefore(twoWeeksAgo)
-    const imagesOfContent = post.postImageIds.map((imageId) => `${baseUrl}${urlForPostAttachment({id: imageId})}`)
+    const imagesOfContent = post.postImageIds.map(({id, type}) => `${baseUrl}${urlForPostAttachment({id, type})}`)
 
     return {
       changefreq: isContentOld ? 'monthly' : 'weekly',
@@ -25,17 +24,18 @@ const generateSitemap = ({posts}) => {
 
 const sitemp = {
   content: async ({project}) => {
-    const {children: postIds} = await project.metaOf({id: 'postCollection'})
+    const {children: postIds} = await project.metaOf({id: null, type: 'postCollection'})
     const posts = await Promise.all(
-      postIds.map((p) => Promise.all([
-        project.valueOf({id: p}),
-        project.metaOf({id: p})
+      postIds.map(({id, type}) => Promise.all([
+        project.valueOf({id, type}),
+        project.metaOf({id, type})
       ]).then(([postContent, postMeta]) => {
-        const postImageIds = postMeta.children.filter((c) => idToType({id: c}) === 'image')
+        const postImageIds = postMeta.children.filter(({type: t}) => t === 'image')
         return {postContent, postImageIds}
       }).then(({postContent, postImageIds}) => ({
         editDate: postContent.editDate,
-        id: p,
+        id,
+        type,
         postImageIds
       }))
       ))

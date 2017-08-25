@@ -1,7 +1,7 @@
 import {cssPath, templatePath} from '../../../config'
 import CleanCSS from 'clean-css'
 import Promise from 'bluebird'
-import {chokidar$} from '../../utils/chokidar'
+import {chokidar} from '../../utils/chokidar'
 import fs from 'fs-extra'
 import path from 'path'
 import stylus from 'stylus'
@@ -30,7 +30,7 @@ const styls = {
       .catch((err) => ({styles: JSON.stringify(err)}))
       .then((output) => ({content: output.styles}))
   },
-  contentWatcher$: () => chokidar$([`${cssPath}/**/*.styl`, `${templatePath}/**/*.styl`], {ignoreInitial: true})
+  contentWatcher$: () => chokidar([`${cssPath}/**/*.styl`, `${templatePath}/**/*.styl`], {ignoreInitial: true})
 }
 
 export {styls as stylus}

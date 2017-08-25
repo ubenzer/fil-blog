@@ -1,13 +1,8 @@
-import {
-  fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
-  urlToPath
-} from '../utils/id'
+import {isPathImage, postIdToImageId, urlToPath} from '../utils/id'
 import {
   isExternalUrl, isVimeo, isYoutube, urlForPostAttachment, urlForPostImage, vimeoUrlToId,
   youtubeUrlToId
 } from '../utils/url'
-import mime from 'mime-types'
-import path from 'path'
 
 const LOW_RES_SIZE = 50
 const DEFAULT_IMAGE_SIZE = 665
@@ -44,21 +39,21 @@ const availableSizesFor = ({id, imageMetas: allImageMetas}) => {
   const imageMeta = allImageMetas.filter((i) => i.id === id)[0]
   if (!imageMeta) { return [] }
 
-  const scaledImages = imageMeta.scaledImageList.map((si) => {
-    return {
-      format: si.format,
-      id: imageMeta.id,
-      original: false,
-      width: si.width
-    }
-  })
-
-  return [...scaledImages, {
-    format: imageMeta.meta.format,
+  const scaledImages = imageMeta.scaledImageList.map((si) => ({
+    format: si.format,
     id: imageMeta.id,
-    original: true,
-    width: imageMeta.meta.width
-  }]
+    original: false,
+    width: si.width
+  }))
+
+  return [
+    ...scaledImages, {
+      format: imageMeta.meta.format,
+      id: imageMeta.id,
+      original: true,
+      width: imageMeta.meta.width
+    }
+  ]
 }
 
 const calculateSrcsetString = ({availableSizes}) => {
@@ -194,8 +189,7 @@ export const markdownImageParser = (md, {imageMetas, postId}) => {
       return renderAsImg({caption, classes, renderAsLink, url})
     }
 
-    const id = idForPostAttachment({type: 'image', url})
-    const availableSizes = availableSizesFor({id, imageMetas})
+    const availableSizes = availableSizesFor({id: imageId, imageMetas})
 
     if (availableSizes.length === 0) {
       throw new Error(`Image with url "${url}" not found.`)

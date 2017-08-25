@@ -10,6 +10,6 @@ export const hashOf = async ({p}) => {
       path: false
     }
   })
-  .then((hashData) => hashData.hash)
+    .then((hashData) => hashData.hash)
 }
 

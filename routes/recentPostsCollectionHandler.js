@@ -2,7 +2,7 @@ import {dateSorter, postDateSelector, sort} from '../utils/sorting'
 import {postsPerPage, templatePath} from '../../config'
 import React from 'react'
 import {calculatePagination} from '../utils/collection'
-import {defaultHeadersFor} from '../utils/http'
+import {defaultHeadersFor} from '../../../fil/app/utils/http'
 import {idForCollection} from '../utils/id'
 import path from 'path'
 import {render} from '../utils/template'
@@ -14,8 +14,8 @@ const chunkSize = postsPerPage
 const recentPostsCollectionHandler = {
   async handle({project, url}) {
     const pageNumber = idForCollection({url}).page
-    const postIds = (await project.metaOf({id: 'postCollection'})).children
-    const posts = await Promise.all(postIds.map((id) => project.valueOf({id})))
+    const postIds = (await project.metaOf({id: null, type: 'postCollection'})).children
+    const posts = await Promise.all(postIds.map(({id, type}) => project.valueOf({id, type})))
 
     const sortedPosts = sort({
       array: posts,
@@ -36,13 +36,10 @@ const recentPostsCollectionHandler = {
            />
     })
 
-    return {
-      body: str,
-      headers: defaultHeadersFor({url: `${url}/index.html`})
-    }
+    return {body: str}
   },
   async handles({project}) {
-    const posts = await project.metaOf({id: 'postCollection'})
+    const posts = await project.metaOf({id: null, type: 'postCollection'})
     const paginatedPostCollection = calculatePagination({array: posts.children, chunkSize})
 
     return paginatedPostCollection.map((xyz, index) => urlForCollection({page: index}))
