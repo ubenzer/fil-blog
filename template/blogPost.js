@@ -12,9 +12,7 @@ import {blogPostPropType} from './propTypes'
 const template = ({post, url}) =>
   <MainContainer>
     <Helmet
-      link={[
-        {href: `${baseUrl}${url}`, rel: 'canonical'}
-      ]}
+      link={[{href: `${baseUrl}${url}`, rel: 'canonical'}]}
       title={post.title}
     />
     <MetaDescription description={post.description} />

@@ -11,7 +11,7 @@ const template = ({bodyText}) =>
         <img
           alt={authorName}
           className="introduction-card__image round-img"
-          src={urlForStaticAsset({id: 'static@/img/profile-2.jpg'})}
+          src={urlForStaticAsset({id: '/img/profile-2.jpg'})}
         />
         <h1 className="introduction-card__name">{authorName}</h1>
         <h2 className="introduction-card__mini-bio">{authorMiniBio}</h2>
