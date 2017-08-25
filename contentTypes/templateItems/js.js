@@ -11,7 +11,7 @@ const js = {
     const p = path.join(jsPath, 'index.js')
 
     return rollup({
-      entry: p,
+      input: p,
       plugins: [
         nodeResolve({
           jsnext: true,
