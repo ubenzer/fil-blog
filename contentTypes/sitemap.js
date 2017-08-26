@@ -44,8 +44,7 @@ const sitemp = {
 
     const map = generateSitemap({posts})
     return {content: map}
-  },
-  useContentCache: () => false
+  }
 }
 
 export {sitemp as sitemap}
