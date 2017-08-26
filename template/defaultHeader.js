@@ -83,6 +83,8 @@ const DefaultHeader = () =>
     ]}
     script={[{src: urlForTemplateJs(), type: 'text/javascript'}]}
     titleTemplate={titleTemplate}
-  />
+  >
+    <base href="/" />
+  </Helmet>
 
 export {DefaultHeader}

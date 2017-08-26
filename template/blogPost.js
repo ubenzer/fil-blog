@@ -28,7 +28,7 @@ const template = ({post, url}) =>
 
 
 template.propTypes = {
-  post: blogPostPropType.isRequired,
+  post: blogPostPropType.isRequired, // eslint-disable-line react/no-typos
   url: PropTypes.string.isRequired
 }
 
