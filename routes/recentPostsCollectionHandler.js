@@ -1,10 +1,11 @@
 import {dateSorter, postDateSelector, sort} from '../utils/sorting'
 import {postsPerPage, templatePath} from '../../config'
+import {templateWatcher, watcherMerge} from '../utils/watcher'
 import React from 'react'
 import {calculatePagination} from '../utils/collection'
-import {defaultHeadersFor} from '../../../fil/app/utils/http'
 import {idForCollection} from '../utils/id'
 import path from 'path'
+import {postCollection as postCollectionType} from '../contentTypes/post/postCollection'
 import {render} from '../utils/template'
 import {requireUncached} from '../utils/require'
 import {urlForCollection} from '../utils/url'
@@ -29,20 +30,26 @@ const recentPostsCollectionHandler = {
 
     const Template = requireUncached(path.join(process.cwd(), templatePath, 'multiplePosts')).default
     const str = render({
-      jsx: <Template
-        currentPage={page.pageNumber}
-        posts={page.content}
-        totalPages={paginatedPostCollection.length}
-           />
+      jsx:
+  <Template
+    currentPage={page.pageNumber}
+    posts={page.content}
+    totalPages={paginatedPostCollection.length}
+  />
     })
 
     return {body: str}
   },
+  handleWatcher: ({notifyFn}) => watcherMerge(
+    postCollectionType.childrenWatcher({notifyFn}),
+    templateWatcher({notifyFn})
+  ),
   async handles({project}) {
     const posts = await project.metaOf({id: null, type: 'postCollection'})
     const paginatedPostCollection = calculatePagination({array: posts.children, chunkSize})
 
     return paginatedPostCollection.map((xyz, index) => urlForCollection({page: index}))
-  }
+  },
+  handlesWatcher: ({notifyFn}) => postCollectionType.childrenWatcher({notifyFn})
 }
 export {recentPostsCollectionHandler}

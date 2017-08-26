@@ -1,6 +1,8 @@
 import {chokidarAddRemoveFile} from '../../utils/chokidar'
+import fs from 'fs-extra'
 import {getFoldersIn} from '../../utils/fs'
 import path from 'path'
+import {pathToId} from '../../utils/id'
 import {postPath} from '../../../config'
 
 export const postCollection = {
@@ -18,14 +20,26 @@ export const postCollection = {
         getFoldersIn(path.join(postPath, year, month))
           .then((postIds) => postIds.map((postId) => ({month, postId, year})))
       )
-    )).reduce((acc, postArray) => [...acc, ...postArray], [])
+    ))
+      .reduce((acc, postArray) => [...acc, ...postArray], [])
+      .map(({year, month, postId}) => {
+        const p = path.join(postPath, year, month, postId, 'index.md')
+        const id = pathToId({p})
+        return {id, month, path: p, postId, year}
+      })
 
-    return posts.map(
-      ({year, month, postId}) => ({id: `${postPath}/${year}/${month}/${postId}/index.md`, type: 'post'})
-    )
+    const exitingPosts = (await Promise.all(
+      posts.map((post) =>
+        fs.pathExists(post.path)
+          .then((exists) => ({exists, post}))
+          .catch(() => ({exists: false, post}))
+      )
+    )).filter(({exists}) => exists).map(({post}) => post)
+
+    return exitingPosts.map(({id}) => ({id, type: 'post'}))
   },
-  childrenWatcher$: () =>
-    chokidarAddRemoveFile(`${postPath}/**/index.md`, {
+  childrenWatcher: ({notifyFn}) =>
+    chokidarAddRemoveFile(notifyFn, `${postPath}/**/index.md`, {
       depth: 3,
       ignoreInitial: true
     }),

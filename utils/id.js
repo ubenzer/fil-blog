@@ -35,8 +35,6 @@ const idToPath = ({id}) => replace('/', path.sep, id)
 
 const pathToId = ({p}) => replace(path.sep, '/', p)
 
-const urlToPath = ({url}) => replace('/', path.sep, url)
-
 const isPathImage = ({p}) => IMAGE_EXTENSIONS.filter((ie) => path.extname(p) === `.${ie}`).length > 0
 
 const isGeneratedImagePath = ({p}) => {
@@ -51,7 +49,7 @@ const isGeneratedImagePath = ({p}) => {
 
 const postRelativeIdConversion = ({postId, relativeUrl}) => {
   const pstPath = path.join(idToPath({id: postId}), '..')
-  const relPath = urlToPath({url: relativeUrl})
+  const relPath = idToPath({id: relativeUrl})
   const absPath = path.join(pstPath, relPath)
   return `${pathToId({p: absPath})}`
 }
@@ -77,6 +75,6 @@ const idForCollection = ({url}) => {
   return {page: Number(pageNumberStr) - 1}
 }
 
-export {idToPath, pathToId, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
+export {idToPath, pathToId, isGeneratedImagePath, idForPostAttachment, idForPost,
   fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, postIdToAttachmentId,
   idForStaticAsset, idForCollection}

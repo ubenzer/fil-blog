@@ -15,6 +15,8 @@ const binaryPassthroughHandler = {
 
     const nonImageAttachments = postAttachments.filter(({type}) => type !== 'image')
     return nonImageAttachments.map(({id}) => urlForPostAttachment({id}))
-  }
+  },
+  useHandleCache: () => false,
+  useHandlesCache: () => false
 }
 export {binaryPassthroughHandler}

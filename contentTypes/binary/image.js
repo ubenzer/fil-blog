@@ -1,7 +1,7 @@
 import {compress, meta, resizeByWidth} from '../../utils/image'
-import {idToPath} from '../../utils/id'
 import {chokidarChangeFile} from '../../utils/chokidar'
 import {contentPath} from '../../../config'
+import {idToPath} from '../../utils/id'
 import path from 'path'
 
 const widths = [50, 200, 500, 1000, 1500, 2000]
@@ -44,7 +44,7 @@ export const image = {
 
     if (type === 'imageMeta') {
       return {
-        id: idToPath({id}),
+        id,
         meta: m,
         scaledImageList
       }
@@ -64,7 +64,8 @@ export const image = {
       scaled
     }
   },
-  contentWatcher$: ({id}) => chokidarChangeFile(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
+  contentWatcher: ({id, notifyFn}) =>
+    chokidarChangeFile(notifyFn, path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 }
 
 

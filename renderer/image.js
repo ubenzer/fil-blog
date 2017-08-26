@@ -1,4 +1,4 @@
-import {isPathImage, postIdToImageId, urlToPath} from '../utils/id'
+import {idToPath, isPathImage, postIdToImageId} from '../utils/id'
 import {
   isExternalUrl, isVimeo, isYoutube, urlForPostAttachment, urlForPostImage, vimeoUrlToId,
   youtubeUrlToId
@@ -184,7 +184,7 @@ export const markdownImageParser = (md, {imageMetas, postId}) => {
 
     const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
     const url = urlForPostAttachment({id: imageId})
-    if (!isPathImage({p: urlToPath({url})})) {
+    if (!isPathImage({p: idToPath({id: url})})) {
       // gifs and svgs goes into this if
       return renderAsImg({caption, classes, renderAsLink, url})
     }

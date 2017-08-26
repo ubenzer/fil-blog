@@ -25,8 +25,8 @@ export const post = {
       })
     )
   },
-  childrenWatcher$: ({id}) =>
-    chokidarAddRemoveFile(idToPath({id}), {
+  childrenWatcher: ({id, notifyFn}) =>
+    chokidarAddRemoveFile(notifyFn, idToPath({id}), {
       ignoreInitial: true,
       ignored: ['**/.*', path.join(idToPath({id}), 'index.md'), '**/']
     }),
@@ -36,7 +36,7 @@ export const post = {
 
     const imageMetas = await Promise.all(
       imageMetaIds.map(
-        ({id: i, type}) => project.valueOf({id: i, type: 'imageMeta'})
+        ({id: i}) => project.valueOf({id: i, type: 'imageMeta'})
       )
     )
 

@@ -17,6 +17,6 @@ export const staticAssetsCollection = {
         }
       })
     ),
-  childrenWatcher$: () => chokidarAddRemoveFile(`${staticAssetPath}/**/*`, {ignoreInitial: true}),
+  childrenWatcher: ({notifyFn}) => chokidarAddRemoveFile(notifyFn, `${staticAssetPath}/**/*`, {ignoreInitial: true}),
   content: async () => ({})
 }

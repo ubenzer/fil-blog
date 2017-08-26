@@ -29,20 +29,23 @@ const sitemp = {
       postIds.map(({id, type}) => Promise.all([
         project.valueOf({id, type}),
         project.metaOf({id, type})
-      ]).then(([postContent, postMeta]) => {
-        const postImageIds = postMeta.children.filter(({type: t}) => t === 'image')
-        return {postContent, postImageIds}
-      }).then(({postContent, postImageIds}) => ({
-        editDate: postContent.editDate,
-        id,
-        type,
-        postImageIds
-      }))
+      ])
+        .then(([postContent, postMeta]) => {
+          const postImageIds = postMeta.children.filter(({type: t}) => t === 'image')
+          return {postContent, postImageIds}
+        })
+        .then(({postContent, postImageIds}) => ({
+          editDate: postContent.editDate,
+          id,
+          postImageIds,
+          type
+        }))
       ))
 
     const map = generateSitemap({posts})
     return {content: map}
-  }
+  },
+  useContentCache: () => false
 }
 
 export {sitemp as sitemap}

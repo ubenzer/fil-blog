@@ -32,7 +32,7 @@ const js = {
         return {content: code}
       })
   },
-  contentWatcher$: () => chokidar(`${jsPath}/**/*.js`, {ignoreInitial: true})
+  contentWatcher: ({notifyFn}) => chokidar(notifyFn, `${jsPath}/**/*.js`, {ignoreInitial: true})
 }
 
 export {js}

@@ -30,7 +30,8 @@ const styls = {
       .catch((err) => ({styles: JSON.stringify(err)}))
       .then((output) => ({content: output.styles}))
   },
-  contentWatcher$: () => chokidar([`${cssPath}/**/*.styl`, `${templatePath}/**/*.styl`], {ignoreInitial: true})
+  contentWatcher: ({notifyFn}) =>
+    chokidar(notifyFn, [`${cssPath}/**/*.styl`, `${templatePath}/**/*.styl`], {ignoreInitial: true})
 }
 
 export {styls as stylus}

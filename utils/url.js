@@ -1,5 +1,5 @@
-import {page, postPath} from '../../config'
 import {idToPath, toGeneratedImagePath} from './id'
+import {page, postPath} from '../../config'
 import path from 'path'
 import replaceall from 'replaceall'
 import slug from 'larvitslugify'
@@ -25,7 +25,7 @@ const urlForPostImage = ({id, width}) => {
   const p = idToPath({id}).substr(postPath.length)
   let finalPath = p
   if (width) {
-    finalPath = toGeneratedImagePath({originalPath: p, dimension: width})
+    finalPath = toGeneratedImagePath({dimension: width, originalPath: p})
   }
   return replaceall(path.sep, '/', finalPath)
 }

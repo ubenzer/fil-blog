@@ -11,6 +11,7 @@ export const file = {
 
     return {content}
   },
-  contentWatcher$: ({id, notifyFn}) => chokidarChangeFile(notifyFn, path.join(contentPath, idToPath({id})), {ignoreInitial: true}),
+  contentWatcher: ({id, notifyFn}) =>
+    chokidarChangeFile(notifyFn, path.join(contentPath, idToPath({id})), {ignoreInitial: true}),
   useContentCache: () => false
 }

@@ -1,12 +1,13 @@
-import {defaultHeadersFor} from '../../../../fil/app/utils/http'
 import {urlForTemplateStylus} from '../../utils/url'
 
 const templateStylusHandler = {
-  async handle({project, url}) {
+  async handle({project}) {
     const value = await project.valueOf({id: null, type: 'stylus'})
 
     return {body: value.content}
   },
-  handles: async () => [urlForTemplateStylus()]
+  handles: async () => [urlForTemplateStylus()],
+  useHandleCache: () => false,
+  useHandlesCache: () => false
 }
 export {templateStylusHandler}

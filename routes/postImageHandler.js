@@ -1,9 +1,9 @@
-import {fromGeneratedImagePath, idForPostAttachment, isGeneratedImagePath, urlToPath} from '../utils/id'
+import {fromGeneratedImagePath, idForPostAttachment, idToPath, isGeneratedImagePath} from '../utils/id'
 import {urlForPostImage} from '../utils/url'
 
 const postImageHandler = {
   async handle({project, url}) {
-    const p = urlToPath({url})
+    const p = idToPath({id: url})
     const isScaledImage = isGeneratedImagePath({p})
 
     if (!isScaledImage) {
@@ -34,6 +34,8 @@ const postImageHandler = {
       urlForPostImage({id: meta.id}),
       ...meta.scaledImageList.map(({width}) => urlForPostImage({id: meta.id, width}))
     ], [])
-  }
+  },
+  useHandleCache: () => false,
+  useHandlesCache: () => false
 }
 export {postImageHandler}
