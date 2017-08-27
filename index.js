@@ -17,6 +17,7 @@ import {staticAssetsCollection} from './contentTypes/staticAssetsCollection'
 import {stylus} from './contentTypes/templateItems/stylus'
 import {templateJsHandler} from './routes/template/jsHandler'
 import {templateStylusHandler} from './routes/template/stylusHandler'
+import {templateWatcher} from './utils/watcher'
 
 const project = {
   cachePath,
@@ -46,7 +47,8 @@ const project = {
     staticAssetHandler,
     templateJsHandler,
     templateStylusHandler
-  }
+  },
+  watcher: ({notifyFn}) => templateWatcher({notifyFn})
 }
 
 export {project}

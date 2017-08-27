@@ -20,10 +20,10 @@ const singlePostHandler = {
 
     return {body: str}
   },
-  handleWatcher: ({notifyFn, url}) => watcherMerge(
-    postType.contentWatcher({id: url, notifyFn}),
-    templateWatcher({notifyFn})
-  ),
+  // handleWatcher: ({notifyFn, url}) => watcherMerge(
+  //   postType.contentWatcher({id: url, notifyFn}),
+  //   templateWatcher({notifyFn})
+  // ),
   async handles({project}) {
     const posts = await project.metaOf({id: null, type: 'postCollection'})
     return posts.children.map(({id}) => urlForPost({id}))
