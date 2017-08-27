@@ -28,6 +28,7 @@
   },
 
   "rules": {
+    "array-element-newline": "off",
     "brace-style": [2, "1tbs", { "allowSingleLine": true }],
     "capitalized-comments": "off",
     "consistent-return": "off",
@@ -57,11 +58,11 @@
     "react/jsx-indent-props": ["error", 2],
     "react/jsx-max-props-per-line": ["error", {"maximum": 3}],
     "react/jsx-no-literals": "off",
-    "react/jsx-wrap-multilines": [2, {"return": false}],
+    "react/jsx-wrap-multilines": [2, {"arrow": false}],
     "react/prop-types": ["error", {"skipUndeclared": true}],
     "require-await": "off",
     "semi": ["error", "never"],
-    "space-before-function-paren": [2, "never"],
+    "space-before-function-paren": [2, {"anonymous": "never", "named": "never", "asyncArrow": "always"}],
     "object-curly-newline": ["error", {"multiline": true}],
     "object-property-newline": "off",
     "one-var": ["error", "never"],
