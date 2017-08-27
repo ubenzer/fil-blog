@@ -1,6 +1,6 @@
-import {chokidarAddRemoveFile$} from '../utils/chokidar'
+import {chokidarAddRemoveFile} from '../utils/chokidar'
 import globby from 'globby'
-import {pathToIdPart} from '../utils/id'
+import {pathToId} from '../utils/id'
 import {staticAssetPath} from '../../config'
 
 export const staticAssetsCollection = {
@@ -8,13 +8,15 @@ export const staticAssetsCollection = {
     globby(['**/*'], {
       cwd: staticAssetPath,
       nodir: true
-    })
-    .then((files) =>
+    }).then((files) =>
       files.map((file) => {
-        const childId = pathToIdPart({p: file})
-        return `file@/${childId}`
+        const childId = pathToId({p: file})
+        return {
+          id: childId,
+          type: 'file'
+        }
       })
     ),
-  childrenWatcher$: () => chokidarAddRemoveFile$(`${staticAssetPath}/**/*`, {ignoreInitial: true}),
+  childrenWatcher: ({notifyFn}) => chokidarAddRemoveFile(notifyFn, `${staticAssetPath}/**/*`, {ignoreInitial: true}),
   content: async () => ({})
 }

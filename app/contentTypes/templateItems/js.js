@@ -1,5 +1,5 @@
 import babel from 'rollup-plugin-babel'
-import {chokidar$} from '../../utils/chokidar'
+import {chokidar} from '../../utils/chokidar'
 import commonjs from 'rollup-plugin-commonjs'
 import {jsPath} from '../../../config'
 import nodeResolve from 'rollup-plugin-node-resolve'
@@ -11,7 +11,7 @@ const js = {
     const p = path.join(jsPath, 'index.js')
 
     return rollup({
-      entry: p,
+      input: p,
       plugins: [
         nodeResolve({
           jsnext: true,
@@ -25,14 +25,14 @@ const js = {
           presets: [['es2015', {modules: false}]]
         })
       ]
-    }).then((bundle) => {
-      const generated = bundle.generate({format: 'iife'})
-
-      const code = generated.code
-      return {content: code}
     })
+      .then((bundle) => bundle.generate({format: 'iife'}))
+      .then((generated) => {
+        const code = generated.code
+        return {content: code}
+      })
   },
-  contentWatcher$: () => chokidar$(`${jsPath}/**/*.js`, {ignoreInitial: true})
+  contentWatcher: ({notifyFn}) => chokidar(notifyFn, `${jsPath}/**/*.js`, {ignoreInitial: true})
 }
 
 export {js}

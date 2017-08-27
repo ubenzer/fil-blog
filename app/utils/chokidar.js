@@ -1,28 +1,23 @@
-import Rx from 'rxjs/Rx'
 import chokidar from 'chokidar'
 
-const startWatching = ({events, args}) =>
-  Rx.Observable.create((subscriber) => {
-    const watcher = chokidar.watch.apply(null, args)
-
-    events.forEach((e) => {
-      watcher.on(e, () => {
-        subscriber.next()
-      })
+const startWatching = ({notifyFn, events, args}) => {
+  const watcher = chokidar.watch.apply(null, args)
+  events.forEach((e) => {
+    watcher.on(e, () => {
+      notifyFn()
     })
-
-    return () => watcher.close()
   })
-  .publish()
-  .refCount()
 
-const chokidar$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ['all']})
+  return {unsubscribe: () => watcher.close()}
+}
 
-const chokidarAddRemoveFile$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ['add', 'unlink']})
+const chokidarAll = (notifyFn, ...chokidarArgs) =>
+  startWatching({args: chokidarArgs, events: ['all'], notifyFn})
 
-const chokidarChangeFile$ = (...chokidarArgs) =>
-  startWatching({args: chokidarArgs, events: ['change']})
+const chokidarAddRemoveFile = (notifyFn, ...chokidarArgs) =>
+  startWatching({args: chokidarArgs, events: ['add', 'unlink'], notifyFn})
 
-export {chokidar$, chokidarAddRemoveFile$, chokidarChangeFile$}
+const chokidarChangeFile = (notifyFn, ...chokidarArgs) =>
+  startWatching({args: chokidarArgs, events: ['change'], notifyFn})
+
+export {chokidarAll as chokidar, chokidarAddRemoveFile, chokidarChangeFile}

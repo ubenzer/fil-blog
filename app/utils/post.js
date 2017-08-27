@@ -29,10 +29,10 @@ const extractTitleFromMarkdown = ({markdown}) => {
   }
 }
 
-const calculateHtmlContent = ({id, imageMetas, markdownContent, scaledImageIds}) => {
+const calculateHtmlContent = ({id, imageMetas, markdownContent}) => {
   // noinspection JSUnusedGlobalSymbols
   const md = markdownIt()
-    .use(markdownImageParser, {imageMetas, postId: id, scaledImageIds})
+    .use(markdownImageParser, {imageMetas, postId: id})
     .use(markdownLinkParser, {postId: id})
     .use(markdownHighlightJs, {})
     .use(emoji)
@@ -78,7 +78,7 @@ const getPostImage = ({htmlContent}) => {
   return null
 }
 
-const rawContentToPostObject = async ({id, imageMetas, rawFileContent, scaledImageIds}) => {
+const rawContentToPostObject = async ({id, imageMetas, rawFileContent}) => {
   const doc = frontMatter(rawFileContent)
   const createDate = doc.attributes.created
   const editDate = doc.attributes.edited instanceof Date ? doc.attributes.edited : new Date(createDate)
@@ -87,7 +87,7 @@ const rawContentToPostObject = async ({id, imageMetas, rawFileContent, scaledIma
 
   const markdownContent = extractedTitleObject.content
   const title = typeof doc.attributes.title === 'string' ? doc.attributes.title : extractedTitleObject.title
-  const {htmlContent, htmlExcerpt} = calculateHtmlContent({id, imageMetas, markdownContent, scaledImageIds})
+  const {htmlContent, htmlExcerpt} = calculateHtmlContent({id, imageMetas, markdownContent})
   const imgUrl = getPostImage({htmlContent})
   const description = getDescription({htmlContent})
 

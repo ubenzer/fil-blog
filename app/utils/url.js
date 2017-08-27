@@ -1,5 +1,5 @@
+import {idToPath, toGeneratedImagePath} from './id'
 import {page, postPath} from '../../config'
-import {idToPath} from './id'
 import path from 'path'
 import replaceall from 'replaceall'
 import slug from 'larvitslugify'
@@ -21,8 +21,17 @@ const urlForPost = ({id}) => {
   return `${slug(replaceall(path.sep, '/', p), {save: ['/', '-', '_']})}/`
 }
 
+const urlForPostImage = ({id, width}) => {
+  const p = idToPath({id}).substr(postPath.length)
+  let finalPath = p
+  if (width) {
+    finalPath = toGeneratedImagePath({dimension: width, originalPath: p})
+  }
+  return replaceall(path.sep, '/', finalPath)
+}
+
 const urlForPostAttachment = ({id}) => {
-  // we get rid of post part of id (--->/contents/post<---/2010/05/finaller/finaller-500.scaled.webp)
+  // we get rid of post part of id (--->/contents/post<---/2010/05/finaller/test.exe)
   const p = idToPath({id}).substr(postPath.length)
   return slug(replaceall(path.sep, '/', p), {save: ['/', '.', '-', '_']})
 }
@@ -60,4 +69,4 @@ const isYoutube = ({url}) => youtubeUrlToId({url}) !== null
 const isVimeo = ({url}) => vimeoUrlToId({url}) !== null
 
 export {urlForTemplateCss, urlForPost, urlForPostAttachment, urlForTemplateStylus, isExternalUrl, urlForStaticAsset,
-  urlForTemplateJs, urlForSitemap, urlForCollection, vimeoUrlToId, youtubeUrlToId, isYoutube, isVimeo}
+  urlForTemplateJs, urlForSitemap, urlForCollection, vimeoUrlToId, youtubeUrlToId, isYoutube, isVimeo, urlForPostImage}

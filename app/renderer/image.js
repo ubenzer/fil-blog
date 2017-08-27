@@ -1,10 +1,8 @@
+import {idToPath, isPathImage, postIdToImageId} from '../utils/id'
 import {
-  fromGeneratedImagePath, idForPostAttachment, idToPath, isPathImage, postIdToImageId,
-  urlToPath
-} from '../utils/id'
-import {isExternalUrl, isVimeo, isYoutube, urlForPostAttachment, vimeoUrlToId, youtubeUrlToId} from '../utils/url'
-import mime from 'mime-types'
-import path from 'path'
+  isExternalUrl, isVimeo, isYoutube, urlForPostAttachment, urlForPostImage, vimeoUrlToId,
+  youtubeUrlToId
+} from '../utils/url'
 
 const LOW_RES_SIZE = 50
 const DEFAULT_IMAGE_SIZE = 665
@@ -37,41 +35,38 @@ const calculateClasses = ({rawCaption}) => {
   return classes
 }
 
-const availableSizesFor = ({id, imageMetas: allImageMetas, scaledImageIds: allScaledImages}) => {
-  const image = allImageMetas.filter((i) => i.id === id)[0]
-  if (!image) { return [] }
+const availableSizesFor = ({id, imageMetas: allImageMetas}) => {
+  const imageMeta = allImageMetas.filter((i) => i.id === id)[0]
+  if (!imageMeta) { return [] }
 
-  const imagePath = idToPath({id})
+  const scaledImages = imageMeta.scaledImageList.map((si) => ({
+    format: si.format,
+    id: imageMeta.id,
+    original: false,
+    width: si.width
+  }))
 
-  const scaledImages = allScaledImages.reduce((acc, i) => {
-    const p = idToPath({id: i})
-    const ext = path.extname(p).substr(1)
-    const {dimension, originalPath} = fromGeneratedImagePath({p})
-    if (originalPath === imagePath) {
-      return [...acc, {ext, id: i, width: dimension}]
+  return [
+    ...scaledImages, {
+      format: imageMeta.meta.format,
+      id: imageMeta.id,
+      original: true,
+      width: imageMeta.meta.width
     }
-    return acc
-  }, [])
-
-  return [...scaledImages, {
-    ext: path.extname(idToPath({id: image.id})).substr(1),
-    id: image.id,
-    width: image.meta.width
-  }]
+  ]
 }
 
 const calculateSrcsetString = ({availableSizes}) => {
   const mimeImages = availableSizes.map((as) => {
-    const url = urlForPostAttachment({id: as.id})
+    const url = urlForPostImage({id: as.id, width: as.original ? null : as.width})
     return `${url} ${as.width}w`
   })
 
   return mimeImages.join(', ')
 }
 
-const getImageByMaxWidth = ({availableSizes, maxWidth, mime: originalMime}) => {
+const getImageByMaxWidth = ({availableSizes, maxWidth}) => {
   const sortedImages = availableSizes
-    .filter((as) => mime.lookup(as.ext) === originalMime)
     .sort((a, b) => a.width - b.width)
 
   let bestCandidate = sortedImages[0]
@@ -101,19 +96,16 @@ const aTag = ({innerHtml, url}) =>
 
 const renderAsImgWithSrcset = ({availableSizes, caption, classes, imageMeta, renderAsLink, url}) => {
   const allClasses = [...classes]
-  const imageMime = mime.lookup(path.extname(url).substr(1))
   const fallbackImageUrl = urlForPostAttachment({
     id: getImageByMaxWidth({
       availableSizes,
-      maxWidth: allClasses.indexOf('small') > -1 ? SMALL_IMAGE_SIZE : DEFAULT_IMAGE_SIZE,
-      mime: imageMime
+      maxWidth: allClasses.indexOf('small') > -1 ? SMALL_IMAGE_SIZE : DEFAULT_IMAGE_SIZE
     }).id
   })
   const lowResImageUrl = urlForPostAttachment({
     id: getImageByMaxWidth({
       availableSizes,
-      maxWidth: LOW_RES_SIZE,
-      mime: imageMime
+      maxWidth: LOW_RES_SIZE
     }).id
   })
 
@@ -174,7 +166,7 @@ const renderAsImg = ({caption, classes, renderAsLink, url}) => {
   return img
 }
 
-export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) => {
+export const markdownImageParser = (md, {imageMetas, postId}) => {
   md.renderer.rules.image = (tokens, idx) => {
     const token = tokens[idx]
     const srcIndex = token.attrIndex('src')
@@ -192,13 +184,12 @@ export const markdownImageParser = (md, {imageMetas, postId, scaledImageIds}) =>
 
     const imageId = postIdToImageId({imageRelativeUrl: rawUrl, postId})
     const url = urlForPostAttachment({id: imageId})
-    if (!isPathImage({p: urlToPath({url})})) {
+    if (!isPathImage({p: idToPath({id: url})})) {
       // gifs and svgs goes into this if
       return renderAsImg({caption, classes, renderAsLink, url})
     }
 
-    const id = idForPostAttachment({type: 'image', url})
-    const availableSizes = availableSizesFor({id, imageMetas, scaledImageIds})
+    const availableSizes = availableSizesFor({id: imageId, imageMetas})
 
     if (availableSizes.length === 0) {
       throw new Error(`Image with url "${url}" not found.`)

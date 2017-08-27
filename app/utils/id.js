@@ -4,7 +4,7 @@ import path from 'path'
 import replace from 'replaceall'
 import {urlForPost} from './url'
 
-const scaledImagePostfix = '.scaled'
+const scaledImagePostfix = '.scaled-'
 
 const fromGeneratedImagePath = ({p}) => {
   const fileExtension = path.extname(p)
@@ -14,32 +14,26 @@ const fromGeneratedImagePath = ({p}) => {
   if (fileNamePieces.length < 2) { return null }
 
   const afterScaledImagePostFix = fileNamePieces.pop()
-  const [, ext, dimensionStr] = afterScaledImagePostFix.split('-')
-  const dimension = parseInt(dimensionStr, 10)
+  const dimension = parseInt(afterScaledImagePostFix, 10)
 
-  const originalPath = path.join(p, '..', `${fileNamePieces.join(scaledImagePostfix)}.${ext}`)
+  const originalPath = path.join(p, '..', `${fileNamePieces.join(scaledImagePostfix)}${fileExtension}`)
 
-  return {dimension, ext, originalPath}
+  return {dimension, ext: fileExtension.substr(1), originalPath}
 }
 
-const toGeneratedImagePath = ({originalPath, dimension, ext}) => {
+const toGeneratedImagePath = ({originalPath, dimension}) => {
   const fileExtension = path.extname(originalPath)
   const fileName = path.basename(originalPath, fileExtension)
-  const normalizedExtension = ext ? `.${ext}` : fileExtension
 
-  // / a/b/c.jpg becomes a/b/c.scaled-jpg-500.webp
-  const outFileName = `${fileName}${scaledImagePostfix}-${fileExtension.substr(1)}-${dimension}${normalizedExtension}`
+  // / a/b/c.jpg becomes a/b/c.scaled-500.jpg
+  const outFileName = `${fileName}${scaledImagePostfix}${dimension}${fileExtension}`
 
   return path.join(originalPath, '..', outFileName)
 }
 
-const idToType = ({id}) => id.split('@')[0]
+const idToPath = ({id}) => replace('/', path.sep, id)
 
-const idToPath = ({id}) => replace('/', path.sep, id.substr(id.indexOf('@') + 1))
-
-const pathToIdPart = ({p}) => replace(path.sep, '/', p)
-
-const urlToPath = ({url}) => replace('/', path.sep, url)
+const pathToId = ({p}) => replace(path.sep, '/', p)
 
 const isPathImage = ({p}) => IMAGE_EXTENSIONS.filter((ie) => path.extname(p) === `.${ie}`).length > 0
 
@@ -53,28 +47,26 @@ const isGeneratedImagePath = ({p}) => {
   }
 }
 
-const postRelativeIdConversion = ({postId, relativeUrl, type}) => {
+const postRelativeIdConversion = ({postId, relativeUrl}) => {
   const pstPath = path.join(idToPath({id: postId}), '..')
-  const relPath = urlToPath({url: relativeUrl})
+  const relPath = idToPath({id: relativeUrl})
   const absPath = path.join(pstPath, relPath)
-  return `${type}@${pathToIdPart({p: absPath})}`
+  return `${pathToId({p: absPath})}`
 }
 
 const postIdToImageId = ({postId, imageRelativeUrl}) =>
-  postRelativeIdConversion({postId, relativeUrl: imageRelativeUrl, type: 'image'})
+  postRelativeIdConversion({postId, relativeUrl: imageRelativeUrl})
 
 const postIdToAttachmentId = ({postId, attachmentRelativeUrl}) =>
-  postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl, type: 'file'})
+  postRelativeIdConversion({postId, relativeUrl: attachmentRelativeUrl})
 
-const idForPostAttachment = ({url, type}) => `${type}@${postPath}${url}`
+const idForPostAttachment = ({url}) => `${postPath}${url}`
 
-const idForTemplateCss = ({url}) => `file@${url}`
-
-const idForStaticAsset = ({url}) => `file@${staticAssetPath}${url}`
+const idForStaticAsset = ({url}) => `${staticAssetPath}${url}`
 
 const idForPost = ({postIds, url}) =>
   postIds
-    .map((c) => ({id: c, url: urlForPost({id: c})}))
+    .map(({id: c}) => ({id: c, url: urlForPost({id: c})}))
     .filter((c) => c.url === url)[0].id
 
 const idForCollection = ({url}) => {
@@ -83,6 +75,6 @@ const idForCollection = ({url}) => {
   return {page: Number(pageNumberStr) - 1}
 }
 
-export {idToType, idToPath, pathToIdPart, urlToPath, isGeneratedImagePath, idForPostAttachment, idForPost,
+export {idToPath, pathToId, isGeneratedImagePath, idForPostAttachment, idForPost,
   fromGeneratedImagePath, toGeneratedImagePath, isPathImage, postIdToImageId, postIdToAttachmentId,
-  idForTemplateCss, idForStaticAsset, idForCollection}
+  idForStaticAsset, idForCollection}

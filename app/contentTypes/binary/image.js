@@ -1,53 +1,71 @@
-import {compress, meta} from '../../utils/image'
-import {idToPath, pathToIdPart, toGeneratedImagePath} from '../../utils/id'
-import {chokidarChangeFile$} from '../../utils/chokidar'
+import {compress, meta, resizeByWidth} from '../../utils/image'
+import {chokidarChangeFile} from '../../utils/chokidar'
 import {contentPath} from '../../../config'
+import {idToPath} from '../../utils/id'
 import path from 'path'
 
-// Null stands for "original"
-const imageFormats = [null]
 const widths = [50, 200, 500, 1000, 1500, 2000]
 
-const watcher$ = ({id}) => chokidarChangeFile$(path.join(contentPath, idToPath({id})), {ignoreInitial: true})
+const getScaledImageList = ({baseImageMeta}) => {
+  const {width, format} = baseImageMeta
+
+  return widths
+    .filter((w) => w < width)
+    .map((w) => ({
+      format,
+      width: w
+    }))
+}
+
+const getScaledImages = async ({scaledImageList, src}) => {
+  const resizedImagePromises = scaledImageList
+    .map(({width: w, format: f}) =>
+      // as binary buffer
+      resizeByWidth({
+        format: f,
+        src,
+        width: w
+      }).then((buffer) => ({
+        content: buffer,
+        format: f,
+        width: w
+      }))
+    )
+
+  return Promise.all(resizedImagePromises)
+}
 
 export const image = {
-  children: async ({id}) => {
-    const imagePath = idToPath({id})
-    const imageMeta = await meta({src: path.join(contentPath, imagePath)})
-    const {width} = imageMeta
-
-    return widths
-      .filter((w) => w < width)
-      .reduce((acc, w) =>
-        [...acc, ...imageFormats.map((f) => ({
-          format: f,
-          width: w
-        }))]
-      , [])
-      .map(({width: w, format}) => {
-        const scaledImagePath = toGeneratedImagePath({
-          dimension: w,
-          ext: format,
-          originalPath: imagePath
-        })
-        const p = pathToIdPart({p: scaledImagePath})
-
-        return `scaledImage@${p}`
-      })
-  },
-  childrenWatcher$: watcher$,
-
-  content: async ({id}) => {
+  content: async ({id, type}) => {
     const p = path.join(contentPath, idToPath({id}))
-    // noinspection JSUnresolvedFunction
-    const [m, i] = await Promise.all([meta({src: p}), compress({src: p})])
+
+    const m = await meta({src: p})
+    const scaledImageList = getScaledImageList({baseImageMeta: m})
+
+    if (type === 'imageMeta') {
+      return {
+        id,
+        meta: m,
+        scaledImageList
+      }
+    }
+
+    const [i, scaled] = await Promise.all([
+      compress({
+        format: m.format,
+        src: p
+      }),
+      getScaledImages({scaledImageList, src: p})
+    ])
 
     return {
       content: i,
-      meta: m
+      meta: m,
+      scaled
     }
   },
-  contentWatcher$: watcher$
+  contentWatcher: ({id, notifyFn}) =>
+    chokidarChangeFile(notifyFn, path.join(contentPath, idToPath({id})), {ignoreInitial: true})
 }
 
 

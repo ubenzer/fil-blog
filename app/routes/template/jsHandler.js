@@ -1,15 +1,13 @@
-import {defaultHeadersFor} from '../../utils/http'
 import {urlForTemplateJs} from '../../utils/url'
 
 const templateJsHandler = {
-  async handle({project, url}) {
-    const value = await project.valueOf({id: 'js'})
+  async handle({project}) {
+    const value = await project.valueOf({id: null, type: 'js'})
 
-    return {
-      body: value.content,
-      headers: defaultHeadersFor({url})
-    }
+    return {body: value.content}
   },
-  handles: async () => [urlForTemplateJs()]
+  handles: async () => [urlForTemplateJs()],
+  useHandleCache: () => false,
+  useHandlesCache: () => false
 }
 export {templateJsHandler}

@@ -1,26 +1,12 @@
-import path from 'path'
 import sharp from 'sharp'
 
 // Gif is not supported
 const IMAGE_EXTENSIONS = ['jpg', 'png', 'webp']
 
-const extensionToSharpFormatMap = {
-  JPEG: 'jpeg',
-  JPG: 'jpeg',
-  PNG: 'png',
-  WEBP: 'webp',
-  jpeg: 'jpeg',
-  jpg: 'jpeg',
-  png: 'png',
-  webp: 'webp'
-}
-
-const extToSharpFormat = ({ext}) => extensionToSharpFormatMap[ext]
-
-const resizeByWidth = async ({src, width, ext}) =>
+const resizeByWidth = async ({src, width, format}) =>
   sharp(src)
     .resize(width, null)
-    .toFormat(extToSharpFormat({ext}), {quality: 50})
+    .toFormat(format, {quality: 50})
     .toBuffer()
     .catch((e) => {
       // For some reason promises rejected via sharp library doesn't have the stack trace. So I catch and rethrow them.
@@ -28,10 +14,10 @@ const resizeByWidth = async ({src, width, ext}) =>
     })
 
 
-const compress = async ({src}) => {
+const compress = async ({src, format}) => {
   try {
     return sharp(src)
-      .toFormat(extToSharpFormat({ext: path.extname(src).substr(1)}), {quality: 75})
+      .toFormat(format, {quality: 75})
       .toBuffer()
       .catch((e) => {
         // For some reason promises rejected via sharp library doesn't have the stack trace. So I catch/rethrow them.
