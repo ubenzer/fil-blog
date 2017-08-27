@@ -12,9 +12,7 @@ import {blogPostPropType} from './propTypes'
 const template = ({post, url}) =>
   <MainContainer>
     <Helmet
-      link={[
-        {href: `${baseUrl}${url}`, rel: 'canonical'}
-      ]}
+      link={[{href: `${baseUrl}${url}`, rel: 'canonical'}]}
       title={post.title}
     />
     <MetaDescription description={post.description} />
@@ -30,7 +28,7 @@ const template = ({post, url}) =>
 
 
 template.propTypes = {
-  post: blogPostPropType.isRequired,
+  post: blogPostPropType.isRequired, // eslint-disable-line react/no-typos
   url: PropTypes.string.isRequired
 }
 

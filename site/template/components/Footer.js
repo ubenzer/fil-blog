@@ -11,7 +11,7 @@ const Footer = () =>
     <div className="footer__copyright-holder">
       <p>
         <a href={licenseLink} rel="license noopener noreferrer" target="_blank">
-          <img alt={licenseName} src={urlForStaticAsset({id: 'static@/img/cclicense.png'})} />
+          <img alt={licenseName} src={urlForStaticAsset({id: '/img/cclicense.png'})} />
         </a>
       </p>
       <p>
@@ -27,7 +27,8 @@ const Footer = () =>
       <a
         href={filUrl}
         target="_blank" // eslint-disable-line react/jsx-no-target-blank
-      >{fil}</a>
+      >{fil}
+      </a>
       <span>&nbsp;{generatedAt3}</span>
     </div>
   </div>

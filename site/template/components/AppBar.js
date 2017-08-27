@@ -15,7 +15,7 @@ const AppBar = () =>
       <button className="mdc-button app-bar__mobile-button">
         <img
           className="app-bar__mobile-button-icon"
-          src={urlForStaticAsset({id: 'static@/img/ic_more_vert_white_24px.svg'})}
+          src={urlForStaticAsset({id: '/img/ic_more_vert_white_24px.svg'})}
         />
       </button>
 

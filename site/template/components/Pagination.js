@@ -40,19 +40,19 @@ const getText = ({type, value}) => {
 
 const getIcon = ({isActive, type}) => {
   if (type === ITEM_TYPES.FIRST_PAGE_LINK) {
-    return urlForStaticAsset({id: 'static@/img/ic_first_page_black_24px.svg'})
+    return urlForStaticAsset({id: '/img/ic_first_page_black_24px.svg'})
   }
   if (type === ITEM_TYPES.PREVIOUS_PAGE_LINK) {
-    return urlForStaticAsset({id: 'static@/img/ic_chevron_left_black_24px.svg'})
+    return urlForStaticAsset({id: '/img/ic_chevron_left_black_24px.svg'})
   }
   if (type === ITEM_TYPES.NEXT_PAGE_LINK) {
     if (isActive) {
-      return urlForStaticAsset({id: 'static@/img/ic_chevron_right_black_24px.svg'})
+      return urlForStaticAsset({id: '/img/ic_chevron_right_black_24px.svg'})
     }
-    return urlForStaticAsset({id: 'static@/img/ic_chevron_right_white_24px.svg'})
+    return urlForStaticAsset({id: '/img/ic_chevron_right_white_24px.svg'})
   }
   if (type === ITEM_TYPES.LAST_PAGE_LINK) {
-    return urlForStaticAsset({id: 'static@/img/ic_last_page_black_24px.svg'})
+    return urlForStaticAsset({id: '/img/ic_last_page_black_24px.svg'})
   }
   return null
 }
@@ -71,7 +71,7 @@ const renderLis = ({pageUrlFn, paginationModel}) =>
   paginationModel.map(({key, value, type, isActive}) =>
     <li className={getClassName({type})} key={key}>
       {type === ITEM_TYPES.ELLIPSIS &&
-      <img src={urlForStaticAsset({id: 'static@/img/ic_more_horiz_black_24px.svg'})} />
+      <img src={urlForStaticAsset({id: '/img/ic_more_horiz_black_24px.svg'})} />
       }
       {(type === ITEM_TYPES.PREVIOUS_PAGE_LINK ||
         type === ITEM_TYPES.PAGE ||
