@@ -10,7 +10,9 @@
     "generate": "fil",
     "start": "fil --dynamic",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "author": "Umut Benzer <umut@benzer.me>",
   "license": "MIT",
@@ -52,7 +54,8 @@
     "sharp": "^0.18.2",
     "sitemap": "^1.13.0",
     "stylus": "^0.54.5",
-    "ultimate-pagination": "^1.0.0"
+    "ultimate-pagination": "^1.0.0",
+    "snyk": "^1.41.1"
   },
   "devDependencies": {
     "eslint": "^4.5.0",
@@ -62,5 +65,6 @@
     "type": "git",
     "url": "git@github.com:ubenzer/fil-blog.git"
   },
-  "private": true
+  "private": true,
+  "snyk": true
 }
