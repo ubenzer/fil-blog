@@ -25,7 +25,7 @@
     "babel-register": "^6.26.0",
     "bluebird": "^3.5.0",
     "cheerio": "^1.0.0-rc.2",
-    "chokidar": "^1.7.0",
+    "chokidar": "^2.0.0",
     "clean-css": "^4.1.7",
     "document-offset": "^1.0.4",
     "fil": "^8.0.1",
